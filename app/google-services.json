@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "982035850628",
+    "firebase_url": "https://workoutreservation.firebaseio.com",
+    "project_id": "workoutreservation",
+    "storage_bucket": "workoutreservation.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:982035850628:android:4fd8809cbac2c3078ba9d1",
+        "android_client_info": {
+          "package_name": "com.example.workoutreservation"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "982035850628-vk63gq7jv9ca9p7itp30ln1oqh43aats.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.workoutreservation",
+            "certificate_hash": "048809d4da046a56b9277ae19ab3cd6fed006db9"
+          }
+        },
+        {
+          "client_id": "982035850628-sa5ksgf61cjame40t07qk3ki0vhbhe07.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_SF4DfGhS-kkqlS5MerfgST2iDVUJ2tU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "982035850628-sa5ksgf61cjame40t07qk3ki0vhbhe07.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

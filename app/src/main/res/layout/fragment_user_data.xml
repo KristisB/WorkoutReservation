@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/userDataFragment"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:background="#EEEEEE">
+
+
+
+        <TextView
+            android:layout_marginTop="30dp"
+            android:id="@+id/userNameText"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:gravity="center_vertical"
+
+            android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.241"
+            app:layout_constraintStart_toStartOf="parent"
+
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+
+
+            tools:text="Vardas Pavardė" />
+
+        <TextView
+            android:id="@+id/userEmailText"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:gravity="center_vertical"
+
+            app:layout_constraintBottom_toBottomOf="@id/userDataFragment"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@id/userNameText"
+
+            app:layout_constraintTop_toBottomOf="@id/userNameText"
+            app:layout_constraintVertical_bias="0.0"
+            tools:text="vardas.pavarde@email.lt" />
+
+        <TextView
+            android:id="@+id/balanceText"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="16dp"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/userEmailText"
+            app:layout_constraintHorizontal_bias="0.02"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/userEmailText"
+            app:layout_constraintVertical_bias="0.283"
+
+            tools:text="20 credits" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

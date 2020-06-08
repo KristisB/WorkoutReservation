@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_gravity="bottom">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/border"
+        android:gravity="bottom"
+        android:orientation="vertical"
+
+
+        >
+
+        <TextView
+            android:id="@+id/reservationInfoText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/border"
+            android:gravity="center"
+            android:padding="10dp"
+            tools:text="2020.05.20 12:30 Rollshaper" />
+
+        <TextView
+            android:id="@+id/reservationPriceText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/border"
+            android:gravity="center"
+            android:padding="10dp"
+            tools:text="Cost: 1 credit"
+
+            />
+
+        <Button
+            android:id="@+id/reservationConfirmButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="#111111"
+            android:padding="5dp"
+            android:text="@string/book"
+            android:textColor="#ffffff" />
+
+        <Button
+            android:id="@+id/addToWaitlistButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="#888888"
+            android:padding="5dp"
+            android:text="@string/add_to_waitlist"
+            android:textColor="#ffffff" />
+
+    </LinearLayout>
+</layout>

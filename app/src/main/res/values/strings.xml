@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">WorkoutReservation</string>
+    <string name="email">e-mail</string>
+    <string name="password">password</string>
+    <string name="login">Login</string>
+    <string name="workout_list">Workouts</string>
+    <string name="add_workout">Add workout</string>
+    <string name="my_workouts">My workouts</string>
+    <string name="my_waitlists">My Waitlists</string>
+    <string name="my_account">My Account</string>
+    <string name="submit">Submit</string>
+    <string name="reserve">Reserve</string>
+    <string name="book">Book</string>
+    <string name="cancel">Cancel</string>
+    <string name="removeFromWaitlist">Remove from waitlist</string>
+    <string name="add_to_waitlist">Add to waitlist</string>
+    <string name="workout_reservation">Workout Reservation</string>
+    <string name="Open">Open</string>
+    <string name="Close">Close</string>
+</resources>

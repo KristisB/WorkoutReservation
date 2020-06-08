@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/workout_list_item_layout"
+        android:layout_marginTop="5dp">
+
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:background="#000000"
+            android:textColor="#ffffff"
+            android:gravity="center"
+            tools:text="Geguzes 1 d"/>
+        <LinearLayout
+            android:id="@+id/workout_item_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/border"
+            >
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:id="@+id/workout_time"
+                android:background="#999999"
+                tools:text="10:30"
+                android:textSize="30dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_weight="6"
+                android:layout_height="match_parent"
+                android:id="@+id/workout_name"
+                tools:text="Pavadinimas"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:id="@+id/freePlacesText"
+                tools:text="Free places 0/2"/>
+
+            <TextView
+                android:src="@drawable/ic_right"
+                android:layout_width="30dp"
+                android:layout_height="match_parent"
+                android:gravity="right"
+                android:textSize="30dp"
+                android:text=">"
+
+                />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

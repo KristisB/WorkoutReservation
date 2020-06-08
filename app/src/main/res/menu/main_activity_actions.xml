@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/userData"
+        android:title="@string/my_account" />
+    <item
+        android:id="@+id/workoutList"
+        android:title="@string/workout_list" />
+    <item
+        android:id="@+id/addWorkout"
+        android:title="@string/add_workout" />
+    <item
+        android:id="@+id/myWorkouts"
+        android:title="@string/my_workouts" />
+    <item
+        android:id="@+id/myWaitlists"
+        android:title="@string/my_waitlists" />
+    <item
+        android:id="@+id/login"
+        android:title="@string/login" />
+</menu>

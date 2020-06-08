@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/myMenu">
+
+    <fragment
+        android:id="@+id/userData"
+        android:name="com.example.workoutreservation.fragments.UserData"
+        android:label="UserData"
+        tools:layout="@layout/fragment_user_data"/>
+    <fragment
+        android:id="@+id/workoutList"
+        android:name="com.example.workoutreservation.fragments.WorkoutList"
+        android:label="WorkoutList"
+        tools:layout="@layout/fragment_workout_list">
+        <action
+            android:id="@+id/action_workoutList_to_reservationConfirm2"
+            app:destination="@id/reservationConfirm" />
+        <action
+            android:id="@+id/action_workoutList_to_addWorkout"
+            app:destination="@id/addWorkout" />
+    </fragment>
+    <fragment
+        android:id="@+id/login"
+        android:name="com.example.workoutreservation.fragments.Login"
+        android:label="Login"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_login_to_workoutList"
+            app:destination="@id/workoutList" />
+    </fragment>
+    <fragment
+        android:id="@+id/myMenu"
+        android:name="com.example.workoutreservation.fragments.MyMenu"
+        android:label="MyMenu"
+        tools:layout="@layout/fragment_menu">
+        <action
+            android:id="@+id/action_myMenu_to_login"
+            app:destination="@id/login" />
+        <action
+            android:id="@+id/action_myMenu_to_workoutList"
+            app:destination="@id/workoutList" />
+        <action
+            android:id="@+id/action_myMenu_to_userData"
+            app:destination="@id/userData" />
+        <action
+            android:id="@+id/action_myMenu_to_addWorkout"
+            app:destination="@id/addWorkout" />
+        <action
+            android:id="@+id/action_myMenu_to_myWorkouts"
+            app:destination="@id/myWorkouts" />
+        <action
+            android:id="@+id/action_myMenu_to_myWaitlists"
+            app:destination="@id/myWaitlists" />
+    </fragment>
+    <fragment
+        android:id="@+id/addWorkout"
+        android:name="com.example.workoutreservation.fragments.AddWorkout"
+        android:label="AddWorkout"
+        tools:layout="@layout/fragment_add_workout">
+        <argument
+            android:name="workoutDate"
+            app:argType="long" />
+    </fragment>
+    <fragment
+        android:id="@+id/reservationConfirm"
+        android:name="com.example.workoutreservation.fragments.ReservationConfirm"
+        android:label="ReservationConfirm"
+        tools:layout="@layout/fragment_confirm_reservation">
+        <action
+            android:id="@+id/action_reservationConfirm_to_workoutList"
+            app:destination="@id/workoutList" />
+        <argument
+            android:name="workoutID"
+            app:argType="integer" />
+        <argument
+            android:name="userId"
+            app:argType="integer" />
+        <argument
+            android:name="workoutDate"
+            app:argType="long" />
+        <argument
+            android:name="workoutDescription"
+            app:argType="string" />
+        <argument
+            android:name="freePlaces"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/myWorkouts"
+        android:name="com.example.workoutreservation.fragments.MyWorkouts"
+        android:label="MyWorkouts"
+        tools:layout="@layout/fragment_my_workouts">
+        <action
+            android:id="@+id/action_myWorkouts_to_cancelReservation"
+            app:destination="@id/cancelReservation" />
+    </fragment>
+    <fragment
+        android:id="@+id/cancelReservation"
+        android:name="com.example.workoutreservation.fragments.CancelReservation"
+        android:label="CancelReservation"
+        tools:layout="@layout/fragment_cancel_reservation">
+        <action
+            android:id="@+id/action_cancelReservation_to_myWorkouts"
+            app:destination="@id/myWorkouts" />
+        <argument
+            android:name="myWorkoutId"
+            app:argType="integer" />
+        <argument android:name="myWorkoutDate"
+            app:argType="long" />
+        <argument
+            android:name="myWorkoutDescription"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/myWaitlists"
+        tools:layout="@layout/fragment_my_waitlists"
+        android:name="com.example.workoutreservation.fragments.MyWaitlists"
+        android:label="MyWaitlists" >
+        <action
+            android:id="@+id/action_myWaitlists_to_removeWaitlist"
+            app:destination="@id/removeWaitlist" />
+    </fragment>
+    <fragment
+        android:id="@+id/removeWaitlist"
+        tools:layout="@layout/fragment_remove_waitlist"
+        android:name="com.example.workoutreservation.fragments.RemoveWaitlist"
+        android:label="RemoveWaitlist" >
+        <action
+            android:id="@+id/action_removeWaitlist_to_myWaitlists"
+            app:destination="@id/myWaitlists" />
+        <argument
+            android:name="waitlistId"
+            app:argType="integer" />
+        <argument
+            android:name="workoutDateTime"
+            app:argType="long" />
+        <argument
+            android:name="workoutDescription"
+            app:argType="string" />
+    </fragment>
+</navigation>
+
