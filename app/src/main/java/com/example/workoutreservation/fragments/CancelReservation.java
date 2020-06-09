@@ -91,22 +91,21 @@ public class CancelReservation extends Fragment {
                         // Get new Instance ID token
                         String token = task.getResult().getToken();
                         Log.d("CancelReservation", "device token " + token);
-
                     }
                 });
                 String token = "fG6q0KF5S3-DxpkQCDpVFu:APA91bEwTL1DGt-kYHz5paY_D2Na18ta0GDJLLpr_y57EVgjgcqyUFJgIFo40B8_xrSgtPwoWPaNbTcGRFOIlhYRsaCWf-zzUt8DkjUPOoXFFvoSKN0wSRCCwbK2FOIuo7duQHnHo1qm";
 
                 NotificationMessage msg = new NotificationMessage(token, new NotificationModel("1 bandymas", "rimtaibandom"), new MessageData("vienas", "du"));
                 Log.d("message", msg.toString());
-                mainActivity.getMsgService().sendMessage(token, "bandymas1", "vienas du trys").enqueue(new Callback<ResponseBody>() {
+                mainActivity.getMsgService().sendMessage(msg).enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         Toast.makeText(requireContext(), "Message sent", Toast.LENGTH_SHORT).show();
-//                        try {
-//                            Log.d("Message", "Message sent " + response.body().string());
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
+                        try {
+                            Log.d("Message", "Message sent " + response.body().string());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
 
                     @Override
