@@ -36,7 +36,26 @@ public class RemoveWaitlist extends Fragment {
         waitlistItem.setWaitlistId(args.getWaitlistId());
         waitlistItem.setDateTime(args.getWorkoutDateTime());
         waitlistItem.setDescription(args.getWorkoutDescription());
+        waitlistItem.setWorkoutId(args.getWorkoutId());
+        waitlistItem.setFreePlaces(args.getFreePlaces());
         binding.removeWaitlistInfoText.setText(waitlistItem.getDateText() + " " + waitlistItem.getTimeText() + " " + waitlistItem.getDescription());
+
+        //if free place appeared, button appears which directs to ReservationConfirm fragment
+        if(waitlistItem.getFreePlaces()>0){
+            binding.bookButton.setVisibility(View.VISIBLE);
+            binding.bookButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    NavDirections action = RemoveWaitlistDirections.actionRemoveWaitlistToReservationConfirm(
+                            waitlistItem.getWorkoutId(),userId, waitlistItem.getDateTime(),waitlistItem.getDescription(),waitlistItem.getFreePlaces() );
+                    Navigation.findNavController(binding.getRoot()).navigate(action);
+                }
+            });
+
+        }else {
+            binding.bookButton.setVisibility(View.GONE);
+        }
+
         binding.removeWaitlistButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

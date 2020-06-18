@@ -8,12 +8,19 @@
     <fragment
         android:id="@+id/userData"
         android:name="com.example.workoutreservation.fragments.UserData"
-        android:label="UserData"
-        tools:layout="@layout/fragment_user_data"/>
+        android:label="@string/my_account"
+        tools:layout="@layout/fragment_user_data">
+        <action
+            android:id="@+id/action_userData_to_myMenu"
+            app:destination="@id/myMenu" />
+        <action
+            android:id="@+id/action_userData_to_userDataUpdate"
+            app:destination="@id/userDataUpdate" />
+    </fragment>
     <fragment
         android:id="@+id/workoutList"
         android:name="com.example.workoutreservation.fragments.WorkoutList"
-        android:label="WorkoutList"
+        android:label="@string/workout_list"
         tools:layout="@layout/fragment_workout_list">
         <action
             android:id="@+id/action_workoutList_to_reservationConfirm2"
@@ -30,11 +37,14 @@
         <action
             android:id="@+id/action_login_to_workoutList"
             app:destination="@id/workoutList" />
+        <action
+            android:id="@+id/action_login_to_userDataUpdate"
+            app:destination="@id/userDataUpdate" />
     </fragment>
     <fragment
         android:id="@+id/myMenu"
         android:name="com.example.workoutreservation.fragments.MyMenu"
-        android:label="MyMenu"
+        android:label="Home"
         tools:layout="@layout/fragment_menu">
         <action
             android:id="@+id/action_myMenu_to_login"
@@ -58,7 +68,7 @@
     <fragment
         android:id="@+id/addWorkout"
         android:name="com.example.workoutreservation.fragments.AddWorkout"
-        android:label="AddWorkout"
+        android:label="@string/add_workout"
         tools:layout="@layout/fragment_add_workout">
         <argument
             android:name="workoutDate"
@@ -67,7 +77,7 @@
     <fragment
         android:id="@+id/reservationConfirm"
         android:name="com.example.workoutreservation.fragments.ReservationConfirm"
-        android:label="ReservationConfirm"
+        android:label="@string/book"
         tools:layout="@layout/fragment_confirm_reservation">
         <action
             android:id="@+id/action_reservationConfirm_to_workoutList"
@@ -91,7 +101,7 @@
     <fragment
         android:id="@+id/myWorkouts"
         android:name="com.example.workoutreservation.fragments.MyWorkouts"
-        android:label="MyWorkouts"
+        android:label="@string/my_workouts"
         tools:layout="@layout/fragment_my_workouts">
         <action
             android:id="@+id/action_myWorkouts_to_cancelReservation"
@@ -100,7 +110,7 @@
     <fragment
         android:id="@+id/cancelReservation"
         android:name="com.example.workoutreservation.fragments.CancelReservation"
-        android:label="CancelReservation"
+        android:label="Cancel Reservation"
         tools:layout="@layout/fragment_cancel_reservation">
         <action
             android:id="@+id/action_cancelReservation_to_myWorkouts"
@@ -108,7 +118,8 @@
         <argument
             android:name="myWorkoutId"
             app:argType="integer" />
-        <argument android:name="myWorkoutDate"
+        <argument
+            android:name="myWorkoutDate"
             app:argType="long" />
         <argument
             android:name="myWorkoutDescription"
@@ -116,18 +127,18 @@
     </fragment>
     <fragment
         android:id="@+id/myWaitlists"
-        tools:layout="@layout/fragment_my_waitlists"
         android:name="com.example.workoutreservation.fragments.MyWaitlists"
-        android:label="MyWaitlists" >
+        android:label="@string/my_waitlists"
+        tools:layout="@layout/fragment_my_waitlists">
         <action
             android:id="@+id/action_myWaitlists_to_removeWaitlist"
             app:destination="@id/removeWaitlist" />
     </fragment>
     <fragment
         android:id="@+id/removeWaitlist"
-        tools:layout="@layout/fragment_remove_waitlist"
         android:name="com.example.workoutreservation.fragments.RemoveWaitlist"
-        android:label="RemoveWaitlist" >
+        android:label="@string/removeFromWaitlist"
+        tools:layout="@layout/fragment_remove_waitlist">
         <action
             android:id="@+id/action_removeWaitlist_to_myWaitlists"
             app:destination="@id/myWaitlists" />
@@ -140,6 +151,27 @@
         <argument
             android:name="workoutDescription"
             app:argType="string" />
+        <action
+            android:id="@+id/action_removeWaitlist_to_reservationConfirm"
+            app:destination="@id/reservationConfirm" />
+        <argument
+            android:name="workoutId"
+            app:argType="integer" />
+        <argument
+            android:name="freePlaces"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/userDataUpdate"
+        android:name="com.example.workoutreservation.fragments.UserDataUpdate"
+        android:label="@string/my_account"
+        tools:layout="@layout/fragment_user_data_update">
+        <action
+            android:id="@+id/action_userDataUpdate_to_userData"
+            app:destination="@id/userData" />
+        <action
+            android:id="@+id/action_userDataUpdate_to_login"
+            app:destination="@id/login" />
     </fragment>
 </navigation>
 

@@ -69,6 +69,14 @@ public class Login extends Fragment {
 //        return binding.getRoot();
             }
         });
+        binding.signUpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavDirections action =LoginDirections.actionLoginToUserDataUpdate();
+                Navigation.findNavController(binding.getRoot()).navigate(action);
+            }
+        });
+
         return binding.getRoot();
     }
 }

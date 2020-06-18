@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">WorkoutReservation</string>
+    <string name="app_name">Workout Reservation</string>
     <string name="email">e-mail</string>
     <string name="password">password</string>
     <string name="login">Login</string>
@@ -17,4 +17,12 @@
     <string name="workout_reservation">Workout Reservation</string>
     <string name="Open">Open</string>
     <string name="Close">Close</string>
+    <string name="account_balance">Account Balance</string>
+    <string name="logOut">Log Out</string>
+    <string name="update">Update</string>
+    <string name="my_workout_list">example</string>
+    <string name="signUp">Sign up</string>
+    <string name="first_name">Name</string>
+    <string name="family_name">Family name</string>
+    <string name="phone_number">Phone number</string>
 </resources>

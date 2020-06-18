@@ -15,11 +15,17 @@ import androidx.navigation.Navigation;
 import com.example.workoutreservation.MainActivity;
 import com.example.workoutreservation.User;
 import com.example.workoutreservation.databinding.FragmentMenuBinding;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.Calendar;
 
-//TODO make menu reachable from anywhere
-//TODO make notifications
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MyMenu extends Fragment {
     @Nullable
@@ -29,6 +35,30 @@ public class MyMenu extends Fragment {
         FragmentMenuBinding binding = FragmentMenuBinding.inflate(inflater, container, false);
         User user = mainActivity.getUser();
         Log.d("LOGIN", "USER ID: " + user.getUserId() + "USER NAME: " + user.getFirstName());
+
+        //taking token and sendind to DB
+        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+            @Override
+            public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                // Get new Instance ID token
+                String token = task.getResult().getToken();
+                Log.d("MyMenu", "device token " + token);
+                mainActivity.getService().saveToken(user.getUserId(),token).enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        Log.d("MyMenu","token saved in DB "+ response.message());
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                    }
+                });
+
+
+            }
+        });
+
 
         //login Button
         binding.loginButton.setOnClickListener(v -> {

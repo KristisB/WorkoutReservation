@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/userData"
         android:title="@string/my_account" />
     <item
         android:id="@+id/workoutList"
         android:title="@string/workout_list" />
-    <item
-        android:id="@+id/addWorkout"
-        android:title="@string/add_workout" />
     <item
         android:id="@+id/myWorkouts"
         android:title="@string/my_workouts" />

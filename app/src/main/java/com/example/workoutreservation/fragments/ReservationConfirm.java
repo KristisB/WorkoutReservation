@@ -23,6 +23,8 @@ import com.example.workoutreservation.Workout;
 import com.example.workoutreservation.databinding.FragmentConfirmReservationBinding;
 import com.example.workoutreservation.databinding.FragmentLoginBinding;
 
+import java.io.IOException;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -43,7 +45,7 @@ public class ReservationConfirm extends Fragment {
         workout.setDescription(args.getWorkoutDescription());
         workout.setFreePlaces(args.getFreePlaces());
         binding.reservationInfoText.setText(workout.getDateText() + " " + workout.getTimeText() + " " + workout.getDescription());
-//TODO add logic if no credits, not possible to book
+
         Log.d("ReserveConfirmation", "userID " + userId + "; workoutId" + workout.getWorkoutId());
         if (workout.getFreePlaces() > 0) {
             binding.addToWaitlistButton.setVisibility(View.GONE);
@@ -58,8 +60,14 @@ public class ReservationConfirm extends Fragment {
                             User user = mainActivity.getUser();
                             if (response.isSuccessful()) {
                                 //adds reminder into calendar
-                                addToCalendar(user, workout);
-                                Toast.makeText(requireContext(), "Success", Toast.LENGTH_SHORT).show();
+                                if (response.code() == 201) {
+                                    addToCalendar(user, workout);
+                                }
+                                try {
+                                    Toast.makeText(requireContext(), response.body().string(), Toast.LENGTH_SHORT).show();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
 
                                 NavDirections action = ReservationConfirmDirections.actionReservationConfirmToWorkoutList();
                                 Navigation.findNavController(view).navigate(action);
@@ -113,7 +121,7 @@ public class ReservationConfirm extends Fragment {
                     Intent intent = new Intent(Intent.ACTION_INSERT);
                     intent.setData(CalendarContract.Events.CONTENT_URI)
                             .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, workout.getDateText())
-                            .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, workout.getDateText()+3600000)
+                            .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, workout.getDateText() + 3600000)
                             .putExtra(CalendarContract.Events.TITLE, workout.getDescription())
                             .putExtra(CalendarContract.Events.DESCRIPTION, workout.getDescription())
                             .putExtra(CalendarContract.Events.EVENT_LOCATION, "Uzupio 10")

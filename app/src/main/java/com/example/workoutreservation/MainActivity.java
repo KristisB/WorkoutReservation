@@ -18,6 +18,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -36,6 +37,7 @@ import com.example.workoutreservation.fragments.MyWaitlists;
 import com.example.workoutreservation.fragments.MyWorkouts;
 import com.example.workoutreservation.fragments.UserData;
 import com.example.workoutreservation.fragments.WorkoutList;
+import com.example.workoutreservation.fragments.WorkoutListDirections;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.FirebaseApp;
 
@@ -53,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String RIGHTS = "rights";
     public static final String CREDITS = "credits";
     private ApiService service;
-    private MsgApiService msgService;
+//    private MsgApiService msgService;
     private SharedPreferences sharedPref;
 
     private AppBarConfiguration mAppBarConfiguration;
@@ -64,6 +66,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+//        String fragment = getIntent().getStringExtra("fragment");
+//NavDirections action= WorkoutListDirections.actionWorkoutListToReservationConfirm2();
+
+
+//        FragmentManager fragmentManager = getFragmentManager();
+//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         FirebaseApp.initializeApp(this);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -81,10 +90,14 @@ public class MainActivity extends AppCompatActivity {
         //makes drawer to appear by clicking action bar icon
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.Open, R.string.Close);
         drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
+        toggle.syncState();
+
+
+//        toolbar.setTitleTextColor(Color.parseColor("#99999"));
+        //todo change font color
 
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -94,13 +107,11 @@ public class MainActivity extends AppCompatActivity {
 
         service = retrofit.create(ApiService.class);
 
-        Retrofit retrofitMsgService=new Retrofit.Builder()
-                //.baseUrl("https://workoutreservation.firebaseapp.com/")
-                .baseUrl("https://fcm.googleapis.com/")
-
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        msgService=retrofitMsgService.create(MsgApiService.class);
+//        Retrofit retrofitMsgService=new Retrofit.Builder()
+//                .baseUrl("https://fcm.googleapis.com/")
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .build();
+//        msgService=retrofitMsgService.create(MsgApiService.class);
 
         sharedPref = getPreferences(Context.MODE_PRIVATE);
 
@@ -117,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
     public ApiService getService() {
         return service;
     }
-    public MsgApiService getMsgService(){return msgService;}
+//    public MsgApiService getMsgService(){return msgService;}
 
     public void saveUser(User user) {
 
@@ -148,41 +159,4 @@ public class MainActivity extends AppCompatActivity {
         user.setCredits(sharedPref.getInt(CREDITS, 0));
         return user;
     }
-
-
-//    private void setNavigationDrawer() {
-//        dLayout = (DrawerLayout) findViewById(R.id.drawer_layout); // initiate a DrawerLayout
-//
-//        NavigationView navView = (NavigationView) findViewById(R.id.navigation); // initiate a Navigation View
-//            // implement setNavigationItemSelectedListener event on NavigationView
-//        navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-//            @Override
-//            public boolean onNavigationItemSelected(MenuItem menuItem) {
-//                Fragment frag = null; // create a Fragment Object
-//                int itemId = menuItem.getItemId(); // get selected menu item's id
-//                    // check selected menu item's id and replace a Fragment Accordingly
-//                if (itemId == R.id.myAccount) {
-//                    frag = new UserData();
-//                } else if (itemId == R.id.workouts) {
-//                    frag = new WorkoutList();
-//                } else if (itemId == R.id.addWorkout) {
-//                    frag = new AddWorkout();
-//                }else if (itemId == R.id.myWorkouts) {
-//                    frag = new MyWorkouts();
-//                }else if (itemId == R.id.myWaitlists) {
-//                    frag = new MyWaitlists();
-//                }else if (itemId == R.id.login) {
-//                    frag = new Login();
-//                }
-//                if (frag != null) {
-//                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//                    transaction.replace(R.id.nav_host_fragment, frag); // replace a Fragment with Frame Layout
-//                    transaction.commit(); // commit the changes
-//                    dLayout.closeDrawers(); // close the all open Drawer Views
-//                    return true;
-//                }
-//                return false;
-//            }
-//        });
-//    }
 }

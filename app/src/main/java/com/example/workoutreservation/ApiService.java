@@ -18,6 +18,16 @@ public interface ApiService {
     Call<User> login(@Field("email") String email, @Field("password") String password);
 
     @FormUrlEncoded
+    @POST("save_token")
+    Call<ResponseBody> saveToken(@Field("userId") int userId, @Field("token") String token);
+
+    @FormUrlEncoded
+    @POST("save_user_data")
+    Call<ResponseBody> saveUserData(@Field("userId") int userId, @Field("firstName") String firstName,
+                                    @Field("familyName") String familyName, @Field("email") String email,
+                                    @Field("password") String password,@Field("phone") String phone);
+
+    @FormUrlEncoded
     @POST("get_user_data")
     Call<User> getUserData(@Field("userId") int userId);
 
@@ -43,13 +53,13 @@ public interface ApiService {
 
     @FormUrlEncoded
     @POST("get_my_waitlists")
-    Call<List<WaitlistItem>> getMyWaitlists (@Field("userId") int userId);
+    Call<List<WaitlistItem>> getMyWaitlists(@Field("userId") int userId);
 
     @FormUrlEncoded
     @POST("add_waitlist")
-    Call<ResponseBody> addWaitlist (@Field("workoutId") int workoutId, @Field("userId") int userId);
+    Call<ResponseBody> addWaitlist(@Field("workoutId") int workoutId, @Field("userId") int userId);
 
     @FormUrlEncoded
     @POST("quit_waitlist")
-    Call<ResponseBody> quitWaitlist (@Field("waitlistId") int waitlistId);
+    Call<ResponseBody> quitWaitlist(@Field("waitlistId") int waitlistId);
 }

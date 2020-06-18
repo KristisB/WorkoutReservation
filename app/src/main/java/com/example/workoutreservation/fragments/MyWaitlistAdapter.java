@@ -1,5 +1,7 @@
 package com.example.workoutreservation.fragments;
 
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +12,7 @@ import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.workoutreservation.R;
 import com.example.workoutreservation.WaitlistItem;
 import com.example.workoutreservation.Workout;
 import com.example.workoutreservation.databinding.FragmentWorkoutListItemBinding;
@@ -71,9 +74,18 @@ public class MyWaitlistAdapter extends RecyclerView.Adapter<MyWaitlistAdapter.My
                 binding.date.setVisibility(View.GONE);
             }
 //TODO add window to show #which in line
+
             binding.date.setText(myWaitlistItem.getDateText());
             binding.workoutTime.setText(myWaitlistItem.getTimeText());
             binding.workoutName.setText(myWaitlistItem.getDescription());
+
+            //if there appeared free places and there is possibility to book - item adjusted with red border
+            if(myWaitlistItem.getFreePlaces()>0){
+                GradientDrawable gd = new GradientDrawable();
+                gd.setStroke(5, Color.parseColor("#FA1111"));
+                binding.workoutItemLayout.setBackground(gd);
+                binding.workoutName.setText(myWaitlistItem.getDescription()+"\n tap to book...");
+            }
             binding.workoutItemLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -81,7 +93,10 @@ public class MyWaitlistAdapter extends RecyclerView.Adapter<MyWaitlistAdapter.My
                     NavDirections action = MyWaitlistsDirections.actionMyWaitlistsToRemoveWaitlist(
                             myWaitlistItem.getWaitlistId(),
                             myWaitlistItem.getDateTime(),
-                            myWaitlistItem.getDescription());
+                            myWaitlistItem.getDescription(),
+                            myWaitlistItem.getWorkoutId(),
+                            myWaitlistItem.getFreePlaces());
+
                     Navigation.findNavController(binding.getRoot()).navigate(action);
                 }
             });

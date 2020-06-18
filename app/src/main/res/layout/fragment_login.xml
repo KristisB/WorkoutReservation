@@ -34,23 +34,45 @@
             android:background="@drawable/border"
             android:gravity="center"
             android:hint="@string/password"
+            android:inputType="textPassword"
             android:padding="10dp"
             tools:text="Password"
-            android:inputType="textPassword"
 
             />
 
-        <Button
-            android:id="@+id/loginButton"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="#111111"
-            android:padding="5dp"
-            android:text="@string/login"
-            android:textColor="#ffffff" />
+            android:orientation="horizontal">
+
+
+            <Button
+                android:id="@+id/loginButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="#111111"
+                android:padding="5dp"
+                android:text="@string/login"
+                android:textColor="#ffffff" />
+
+            <Button
+                android:id="@+id/signUpButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="#999999"
+                android:padding="5dp"
+                android:text="@string/signUp"
+                android:textColor="#ffffff" />
+
+        </LinearLayout>
 
     </LinearLayout>
 </layout>

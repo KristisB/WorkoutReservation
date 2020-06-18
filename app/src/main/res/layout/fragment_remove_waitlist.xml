@@ -25,7 +25,17 @@
             android:padding="10dp"
             tools:text="2020.05.20 12:30 Rollshaper" />
 
-
+        <Button
+            android:id="@+id/bookButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="#111111"
+            android:padding="5dp"
+            android:text="@string/book"
+            android:textColor="#ffffff" />
 
 
 

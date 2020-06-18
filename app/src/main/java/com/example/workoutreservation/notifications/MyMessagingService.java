@@ -3,21 +3,17 @@ package com.example.workoutreservation.notifications;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
-import android.os.IBinder;
+import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
 import com.example.workoutreservation.MainActivity;
 import com.example.workoutreservation.R;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -36,20 +32,17 @@ public class MyMessagingService extends FirebaseMessagingService {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             setupChannels(notificationManager);
         }
-        sendNotification(remoteMessage.getNotification().getBody());
-
-//        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, ADMIN_CHANEL_ID)
-//                .setSmallIcon(R.drawable.ic_schedule)
-//                .setContentTitle("Free Place Notification")
-//                .setContentText("textContent")
-//                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+        String notificationBody = remoteMessage.getNotification().getBody();
+        String notificationTitle = remoteMessage.getNotification().getTitle();
+//        showNotification(remoteMessage.getNotification().getBody());
+        showNotification(notificationTitle, notificationBody);
 
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void setupChannels(NotificationManager notificationManager) {
-        String adminChannelName = "New notification";
-        String adminChannelDescription = "Device to device notification";
+        String adminChannelName = "Workout Reservation Reminders";
+        String adminChannelDescription = "Notifications about upcomming workouts you are signed up";
 
         NotificationChannel adminChannel = new NotificationChannel(ADMIN_CHANEL_ID, adminChannelName, NotificationManager.IMPORTANCE_DEFAULT);
         adminChannel.setDescription(adminChannelDescription);
@@ -60,19 +53,27 @@ public class MyMessagingService extends FirebaseMessagingService {
 
     }
 
-    private void sendNotification(String msgBody) {
+    private void showNotification(String msgTitle, String msgBody) {
         Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("fragment", "MyWaitlists");
+
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, ADMIN_CHANEL_ID);
+        Log.d("MyMessagingService", msgBody);
         notificationBuilder.setSmallIcon(R.drawable.ic_schedule)
-                .setContentTitle("Free Place Notification")
+                .setContentTitle(msgTitle)
                 .setContentText(msgBody)
-                .setAutoCancel(true)
+                .setAutoCancel(false)
+//                .setUsesChronometer(true)
+//                .setChronometerCountDown(true)
                 .setContentIntent(pendingIntent)
+                .setTimeoutAfter(15 * 60 * 1000)
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText(msgBody))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(0,notificationBuilder.build());
+        notificationManager.notify(0, notificationBuilder.build());
     }
 
 }
