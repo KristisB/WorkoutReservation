@@ -24,6 +24,8 @@
             android:gravity="center"
             android:hint="@string/email"
             android:padding="10dp"
+            android:backgroundTint="#CCEEEEEE"
+
             tools:text="Email" />
 
         <EditText
@@ -31,6 +33,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:backgroundTint="#CCEEEEEE"
+
             android:background="@drawable/border"
             android:gravity="center"
             android:hint="@string/password"

@@ -20,6 +20,7 @@
             android:contextClickable="true"
             app:navigationIcon="@drawable/ic_menu"
             app:title="@string/workout_reservation"
+            android:theme="@style/ToolbarTheme"
             app:titleTextColor="#FFFFFF" />
 
 

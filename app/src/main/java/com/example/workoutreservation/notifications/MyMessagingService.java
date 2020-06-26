@@ -3,6 +3,7 @@ package com.example.workoutreservation.notifications;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -11,6 +12,7 @@ import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
+import androidx.navigation.NavDeepLinkBuilder;
 
 import com.example.workoutreservation.MainActivity;
 import com.example.workoutreservation.R;
@@ -55,9 +57,15 @@ public class MyMessagingService extends FirebaseMessagingService {
 
     private void showNotification(String msgTitle, String msgBody) {
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("fragment", "MyWaitlists");
+//        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+//        stackBuilder.addNextIntentWithParentStack(intent);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+        intent.putExtra("fragment", "MyWaitlists");
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent pendingIntent =
+                PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+
+
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, ADMIN_CHANEL_ID);
         Log.d("MyMessagingService", msgBody);
         notificationBuilder.setSmallIcon(R.drawable.ic_schedule)
@@ -68,8 +76,7 @@ public class MyMessagingService extends FirebaseMessagingService {
 //                .setChronometerCountDown(true)
                 .setContentIntent(pendingIntent)
                 .setTimeoutAfter(15 * 60 * 1000)
-                .setStyle(new NotificationCompat.BigTextStyle()
-                        .bigText(msgBody))
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(msgBody))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);

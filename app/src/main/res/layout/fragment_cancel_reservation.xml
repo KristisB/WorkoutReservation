@@ -17,7 +17,7 @@
             android:id="@+id/cancelReservationInfoText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
+            android:backgroundTint="#CCEEEEEE"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:background="@drawable/border"
@@ -31,6 +31,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:background="@drawable/border"
+            android:backgroundTint="#CCEEEEEE"
+
             android:gravity="center"
             android:padding="10dp"
             tools:text="Cost: 1 credit"

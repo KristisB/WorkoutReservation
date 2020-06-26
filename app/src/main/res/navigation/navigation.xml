@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_userData_to_userDataUpdate"
             app:destination="@id/userDataUpdate" />
+        <action
+            android:id="@+id/action_userData_to_logList"
+            app:destination="@id/logList" />
     </fragment>
     <fragment
         android:id="@+id/workoutList"
@@ -64,6 +67,9 @@
         <action
             android:id="@+id/action_myMenu_to_myWaitlists"
             app:destination="@id/myWaitlists" />
+        <action
+            android:id="@+id/action_myMenu_to_usersList"
+            app:destination="@id/usersList" />
     </fragment>
     <fragment
         android:id="@+id/addWorkout"
@@ -172,6 +178,34 @@
         <action
             android:id="@+id/action_userDataUpdate_to_login"
             app:destination="@id/login" />
+    </fragment>
+    <fragment
+        android:id="@+id/usersList"
+        android:name="com.example.workoutreservation.fragments.UsersList"
+        android:label="Clients list"
+        tools:layout="@layout/fragment_user_list">
+        <action
+            android:id="@+id/action_usersList_to_userBalanceUpdate"
+            app:destination="@id/userBalanceUpdate" />
+    </fragment>
+    <fragment
+        android:id="@+id/userBalanceUpdate"
+        android:name="com.example.workoutreservation.fragments.UserBalanceUpdate"
+        android:label="Balance Update"
+        tools:layout="@layout/fragment_user_balance_update">
+        <argument
+            android:name="userId"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_userBalanceUpdate_to_logList"
+            app:destination="@id/logList" />
+    </fragment>
+    <fragment
+        android:id="@+id/logList"
+        android:name="com.example.workoutreservation.fragments.LogList"
+        android:label="LogList" >
+        <argument android:name="userId"
+            app:argType="integer" />
     </fragment>
 </navigation>
 

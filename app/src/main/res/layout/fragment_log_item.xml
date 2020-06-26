@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:id="@+id/log_item_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:background="#000000"
+            android:gravity="center"
+            android:textColor="#ffffff"
+            tools:text="Geguzes 1 d" />
+
+        <LinearLayout
+            android:id="@+id/log_item_inside_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <TextView
+                    android:id="@+id/operation_date"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    tools:text="21st" />
+
+                <TextView
+                    android:id="@+id/operation_time"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    tools:text="10:30" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_weight="10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <TextView
+                    android:id="@+id/operation_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    tools:text="Pavadinimas" />
+
+                <TextView
+                    android:id="@+id/reference_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textSize="10sp"
+                    tools:text="Jonas Jonaitis" />
+            </LinearLayout>
+
+
+            <TextView
+                android:layout_weight="1"
+                android:id="@+id/balanceChangeText"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:gravity="right"
+                android:textSize="30sp"
+                android:padding="5dp"
+                tools:text="-1" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

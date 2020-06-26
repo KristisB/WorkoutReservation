@@ -76,7 +76,7 @@ public class Workout {
     public String getTimeText() {
         Calendar workoutDate = Calendar.getInstance();
         workoutDate.setTimeInMillis(dateTime);
-        String timeText = workoutDate.get(Calendar.HOUR_OF_DAY) + ":" + workoutDate.get(Calendar.MINUTE);
+        String timeText = String.format(Locale.getDefault(),"%02d:%02d",workoutDate.get(Calendar.HOUR_OF_DAY), workoutDate.get(Calendar.MINUTE)) ;
         return timeText;
     }
 

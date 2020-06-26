@@ -7,7 +7,7 @@
         android:id="@+id/myWorkoutsRecycleList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#557799"
+        android:background="#CCEEEEEE"
         android:scrollbars="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:itemCount="2"

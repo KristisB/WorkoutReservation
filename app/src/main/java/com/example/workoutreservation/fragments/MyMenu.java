@@ -28,19 +28,51 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MyMenu extends Fragment {
+
+    private FragmentMenuBinding binding;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MainActivity mainActivity = (MainActivity) requireActivity();
+        if(mainActivity.getNewIntentDirection()==1){
+            NavDirections action = MyMenuDirections.actionMyMenuToMyWaitlists();
+            Navigation.findNavController(binding.getRoot()).navigate(action);
+        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         MainActivity mainActivity = (MainActivity) requireActivity();
-        FragmentMenuBinding binding = FragmentMenuBinding.inflate(inflater, container, false);
+        binding = FragmentMenuBinding.inflate(inflater, container, false);
         User user = mainActivity.getUser();
         Log.d("LOGIN", "USER ID: " + user.getUserId() + "USER NAME: " + user.getFirstName());
 
-        //taking token and sendind to DB
+
+
+        //updating user info from DB on Start up
+        mainActivity.getService().getUserData(user.getUserId()).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                User user = response.body();
+                if (response.isSuccessful()) {
+                    mainActivity.saveUser(user);
+                    Log.d("MyMenu","User data synchronised from DB");
+
+                }
+            }
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Log.d("MyMenu","Unable to update User info from DB. Check connection.");
+            }
+        });
+
+        //taking token and sendind to DB on start up
         FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
             @Override
             public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                // Get new Instance ID token
+                // Get new Instance ID token and save it to DB
                 String token = task.getResult().getToken();
                 Log.d("MyMenu", "device token " + token);
                 mainActivity.getService().saveToken(user.getUserId(),token).enqueue(new Callback<ResponseBody>() {
@@ -48,7 +80,6 @@ public class MyMenu extends Fragment {
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         Log.d("MyMenu","token saved in DB "+ response.message());
                     }
-
                     @Override
                     public void onFailure(Call<ResponseBody> call, Throwable t) {
 
@@ -97,8 +128,8 @@ public class MyMenu extends Fragment {
             });
         }
         // add my workout Button
-        if ((user.getUserId() == -1) && (user.getRights() != 1)) {
-            binding.myWorkoutsButton.setVisibility(View.VISIBLE);
+        if ((user.getUserId() == -1) || (user.getRights() != 1)) {
+            binding.myWorkoutsButton.setVisibility(View.GONE);
         } else {
             binding.myWorkoutsButton.setOnClickListener(v -> {
                 NavDirections action = MyMenuDirections.actionMyMenuToMyWorkouts();
@@ -114,7 +145,15 @@ public class MyMenu extends Fragment {
                 Navigation.findNavController(binding.getRoot()).navigate(action);
             });
         }
-
+        // add clients list Button
+        if ((user.getUserId() == -1) || (user.getRights() != 1)) {
+            binding.clientsListButton.setVisibility(View.GONE);
+        } else {
+            binding.clientsListButton.setOnClickListener(v -> {
+                NavDirections action = MyMenuDirections.actionMyMenuToUsersList();
+                Navigation.findNavController(binding.getRoot()).navigate(action);
+            });
+        }
 
         return binding.getRoot();
     }

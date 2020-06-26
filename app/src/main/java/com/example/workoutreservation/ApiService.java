@@ -1,5 +1,7 @@
 package com.example.workoutreservation;
 
+import org.json.JSONArray;
+
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -62,4 +64,20 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("quit_waitlist")
     Call<ResponseBody> quitWaitlist(@Field("waitlistId") int waitlistId);
+
+    @FormUrlEncoded
+    @POST("get_all_users")
+    Call<List<User>> getAllUsers(@Field("userRights") int rights);
+
+    @FormUrlEncoded
+    @POST("add_credits")
+    Call<Integer> updateBalance(@Field("userId")int userId, @Field("addCredits") int addCredits, @Field("referenceId") int referenceId);
+
+    @FormUrlEncoded
+    @POST("change_rights")
+    Call<Integer> changeRights(@Field("userId")int userId, @Field("newRights")int newRights);
+
+    @FormUrlEncoded
+    @POST("get_operation_log")
+    Call<List<LogDataEntry>> getLog(@Field("userId") int userId);
 }

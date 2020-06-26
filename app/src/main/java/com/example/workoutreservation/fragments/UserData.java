@@ -68,11 +68,18 @@ public class UserData extends Fragment {
         binding.updateUserInfoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NavDirections action=UserDataDirections.actionUserDataToUserDataUpdate();
+                NavDirections action = UserDataDirections.actionUserDataToUserDataUpdate();
                 Navigation.findNavController(binding.getRoot()).navigate(action);
             }
         });
 
+        binding.reportButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavDirections action = UserDataDirections.actionUserDataToLogList(user.getUserId());
+                Navigation.findNavController(binding.getRoot()).navigate(action);
+            }
+        });
 
         return binding.getRoot();
 

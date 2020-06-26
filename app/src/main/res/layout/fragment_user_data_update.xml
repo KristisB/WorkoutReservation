@@ -7,7 +7,7 @@
         android:id="@+id/userDataFragment"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:background="#EEEEEE">
+        android:background="#CCEEEEEE">
 
         <LinearLayout
             android:id="@+id/userNameLayout"

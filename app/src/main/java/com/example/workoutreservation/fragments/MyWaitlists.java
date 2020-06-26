@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 
 import com.example.workoutreservation.MainActivity;
 import com.example.workoutreservation.User;
@@ -25,10 +27,14 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MyWaitlists extends Fragment {
+
+    private FragmentMyWaitlistsBinding binding;
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        FragmentMyWaitlistsBinding binding = FragmentMyWaitlistsBinding.inflate(inflater, container, false);
+        binding = FragmentMyWaitlistsBinding.inflate(inflater, container, false);
         MainActivity mainActivity = (MainActivity) getActivity();
         User user = mainActivity.getUser();
         mainActivity.getService().getMyWaitlists(user.getUserId()).enqueue(new Callback<List<WaitlistItem>>() {

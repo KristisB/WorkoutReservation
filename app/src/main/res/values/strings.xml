@@ -25,4 +25,11 @@
     <string name="first_name">Name</string>
     <string name="family_name">Family name</string>
     <string name="phone_number">Phone number</string>
+    <string name="workout_duration">Workout duration</string>
+    <string name="workout_description">Workout description</string>
+    <string name="credits_available">Credits available</string>
+    <string name="clients_list">Clients list</string>
+    <string name="add_credits">Add credits</string>
+    <string name="administrator_rights">Administrator rights</string>
+    <string name="report">Report</string>
 </resources>

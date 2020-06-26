@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/userDataFragment"
+        android:id="@+id/userBalanceUpdateFragment"
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:background="#CCEEEEEE">
@@ -30,55 +30,33 @@
             android:id="@+id/userEmailText"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:padding="5dp"
-
             android:gravity="center_vertical"
+
+            android:padding="5dp"
+            android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@id/userNameText"
             app:layout_constraintTop_toBottomOf="@id/userNameText"
             app:layout_constraintVertical_bias="0.0"
-            android:textSize="12sp"
             tools:text="vardas.pavarde@email.lt" />
+
         <TextView
             android:id="@+id/userPhoneText"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:padding="5dp"
             android:layout_marginBottom="20dp"
-
             android:gravity="center_vertical"
+
+            android:padding="5dp"
+            android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@id/userNameText"
             app:layout_constraintTop_toBottomOf="@id/userEmailText"
             app:layout_constraintVertical_bias="0.0"
-            android:textSize="12sp"
             tools:text="+370 655 55555" />
 
-        <Button
-            android:id="@+id/updateUserInfoButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="#111111"
-            android:layout_marginEnd="20dp"
-            android:padding="5dp"
-            android:text="@string/update"
-            android:textColor="#ffffff"
-            app:layout_constraintBottom_toBottomOf="@id/userPhoneText"
-            app:layout_constraintEnd_toEndOf="parent" />
-        <Button
-            android:id="@+id/reportButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="#111111"
-            android:layout_marginEnd="20dp"
-            android:layout_marginTop="20dp"
-            android:padding="5dp"
-            android:text="@string/report"
-            android:textColor="#ffffff"
-            app:layout_constraintTop_toBottomOf="@id/updateUserInfoButton"
-            app:layout_constraintEnd_toEndOf="parent" />
 
         <View
             android:layout_width="match_parent"
@@ -109,18 +87,70 @@
             app:layout_constraintVertical_bias="0.283"
             tools:text="20 credits" />
 
-        <Button
-            android:id="@+id/logOutButton"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
+            android:text="@string/add_credits"
+            app:layout_constraintBottom_toTopOf="@id/addCreditsEditText"
+            app:layout_constraintStart_toStartOf="@id/addCreditsEditText" />
+
+        <EditText
+            android:id="@+id/addCreditsEditText"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="20dp"
+            android:gravity="center"
+            android:textSize="20sp"
+           android:inputType="numberSigned"
+            app:layout_constraintBottom_toBottomOf="@id/balanceText"
+            app:layout_constraintHorizontal_bias="0.02"
+            app:layout_constraintStart_toEndOf="@id/balanceText"
+            app:layout_constraintVertical_bias="0.283"
+            tools:text="20" />
+
+        <Button
+            android:id="@+id/addCreditsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
             android:background="#888888"
             android:padding="5dp"
-            android:text="@string/logOut"
+            android:text="@string/add_credits"
             android:textColor="#ffffff"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/addCreditsEditText"
+            app:layout_constraintTop_toTopOf="@id/addCreditsEditText" />
 
+        <Button
+            android:id="@+id/reportButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="#111111"
+            android:padding="5dp"
+            android:text="@string/report"
+            android:textColor="#ffffff"
+            app:layout_constraintStart_toStartOf="@id/addCreditsButton"
+            app:layout_constraintEnd_toEndOf="@+id/addCreditsButton"
+            app:layout_constraintTop_toBottomOf="@id/addCreditsButton" />
+
+
+        <CheckBox
+            android:id="@+id/rightsCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:buttonTint="#000000"
+            app:layout_constraintStart_toStartOf="@id/balanceText"
+            app:layout_constraintTop_toBottomOf="@id/balanceText"
+            android:layout_marginTop="30dp"
+            />
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/rightsCheckBox"
+            app:layout_constraintTop_toTopOf="@id/rightsCheckBox"
+            android:layout_marginStart="10dp"
+            android:textSize="12sp"
+            android:text="@string/administrator_rights"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

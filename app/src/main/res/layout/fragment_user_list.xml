@@ -4,14 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/myWaitlistsRecycleList"
+        android:id="@+id/users_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#CCEEEEEE"
         android:scrollbars="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:itemCount="2"
-        tools:listitem="@layout/fragment_workout_list_item">
+        tools:itemCount="5"
+        tools:listitem="@layout/fragment_user_list_item">
+
 
     </androidx.recyclerview.widget.RecyclerView>
 
