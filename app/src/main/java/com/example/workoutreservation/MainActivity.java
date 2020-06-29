@@ -67,14 +67,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private ApiService service;
-    //    private MsgApiService msgService;
     private SharedPreferences sharedPref;
-//        ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
     private NavController navController;
-    //todo add functionality to add credits and assign rights
 
 
     @Override
@@ -82,10 +79,14 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         Intent intent = getIntent();
         if (intent != null) {
-            if (intent.getExtras() != null)
+            if (intent.getExtras() != null) {
                 if (intent.getStringExtra("fragment").equals("MyWaitlists")) {
                     newIntentDirection = 1;
                 }
+                if (intent.getStringExtra("fragment").equals("MyWorkouts")) {
+                    newIntentDirection = 2;
+                }
+            }
         }
     }
 
@@ -153,6 +154,10 @@ public class MainActivity extends AppCompatActivity {
             if (intent.getExtras() != null) {
                 if (intent.getStringExtra("fragment").equals("MyWaitlists")) {
                     newIntentDirection = 1;
+                    super.recreate();
+                }
+                if (intent.getStringExtra("fragment").equals("MyWorkouts")) {
+                    newIntentDirection = 2;
                     super.recreate();
                 }
             }

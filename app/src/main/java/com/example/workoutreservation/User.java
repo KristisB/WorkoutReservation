@@ -1,5 +1,13 @@
 package com.example.workoutreservation;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
+
 public class User {
     private int userId;
     private String email;
@@ -72,6 +80,21 @@ public class User {
 
     public void setCredits(int credits) {
         this.credits = credits;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public String hashPass(String password){
+        String hashedPass = null;
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-512");
+            md.update(password.getBytes());
+            byte[] bytes=md.digest();
+            hashedPass= Base64.getEncoder().encodeToString(bytes);
+
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return hashedPass;
     }
 
 

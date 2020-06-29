@@ -203,7 +203,8 @@
     <fragment
         android:id="@+id/logList"
         android:name="com.example.workoutreservation.fragments.LogList"
-        android:label="LogList" >
+        android:label="LogList"
+        tools:layout="@layout/fragment_log_list">
         <argument android:name="userId"
             app:argType="integer" />
     </fragment>

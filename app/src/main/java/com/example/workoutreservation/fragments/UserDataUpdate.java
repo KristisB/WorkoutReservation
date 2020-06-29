@@ -1,5 +1,6 @@
 package com.example.workoutreservation.fragments;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
@@ -43,6 +45,7 @@ public class UserDataUpdate extends Fragment {
             binding.signUpButton.setVisibility(View.GONE);
             binding.updateUserInfoButton.setVisibility(View.VISIBLE);
             binding.updateUserInfoButton.setOnClickListener(new View.OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.O)
                 @Override
                 public void onClick(View v) {
                     user.setFirstName(binding.userNameEditText.getText().toString());
@@ -50,7 +53,8 @@ public class UserDataUpdate extends Fragment {
                     user.setEmail(binding.userEmailEditText.getText().toString());
                     user.setPhone(binding.userPhoneEditText.getText().toString());
                     if (!binding.userPasswordEditText.getText().toString().isEmpty()) {
-                        user.setPassword(binding.userPasswordEditText.getText().toString());
+                        String hashedPass=user.hashPass(binding.userPasswordEditText.getText().toString());
+                        user.setPassword(hashedPass);
                     }
                     mainActivity.getService().saveUserData(
                             user.getUserId(),
@@ -96,7 +100,8 @@ public class UserDataUpdate extends Fragment {
                     user.setEmail(binding.userEmailEditText.getText().toString());
                     user.setPhone(binding.userPhoneEditText.getText().toString());
                     if (!binding.userPasswordEditText.getText().toString().isEmpty()) {
-                        user.setPassword(binding.userPasswordEditText.getText().toString());
+                        String hashedPass=user.hashPass(binding.userPasswordEditText.getText().toString());
+                        user.setPassword(hashedPass);
                     }
                     mainActivity.getService().saveUserData(
                             user.getUserId(),

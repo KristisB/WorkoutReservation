@@ -28,7 +28,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MyMenu extends Fragment {
-
+// todo customize welcome screen
     private FragmentMenuBinding binding;
 
     @Override
@@ -37,6 +37,10 @@ public class MyMenu extends Fragment {
         MainActivity mainActivity = (MainActivity) requireActivity();
         if(mainActivity.getNewIntentDirection()==1){
             NavDirections action = MyMenuDirections.actionMyMenuToMyWaitlists();
+            Navigation.findNavController(binding.getRoot()).navigate(action);
+        }
+        if(mainActivity.getNewIntentDirection()==2){
+            NavDirections action = MyMenuDirections.actionMyMenuToMyWorkouts();
             Navigation.findNavController(binding.getRoot()).navigate(action);
         }
     }

@@ -24,7 +24,6 @@ public class MyMessagingService extends FirebaseMessagingService {
 
     public MyMessagingService() {
     }
-//FirebaseInstanceId.getInstance().getInstanceId();
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -56,12 +55,17 @@ public class MyMessagingService extends FirebaseMessagingService {
     }
 
     private void showNotification(String msgTitle, String msgBody) {
-        Intent intent = new Intent(this, MainActivity.class);
-//        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-//        stackBuilder.addNextIntentWithParentStack(intent);
+        String extra="";
+        if(msgTitle.equals("Workout reservation availabe")){
+            extra="MyWaitlists";
+        }
+        if(msgTitle.equals("Upcoming workout reminder")){
+            extra="MyWorkouts";
+        }
 
-        intent.putExtra("fragment", "MyWaitlists");
-//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        Intent intent = new Intent(this, MainActivity.class);
+
+        intent.putExtra("fragment", extra);
         PendingIntent pendingIntent =
                 PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
 
@@ -72,8 +76,6 @@ public class MyMessagingService extends FirebaseMessagingService {
                 .setContentTitle(msgTitle)
                 .setContentText(msgBody)
                 .setAutoCancel(false)
-//                .setUsesChronometer(true)
-//                .setChronometerCountDown(true)
                 .setContentIntent(pendingIntent)
                 .setTimeoutAfter(15 * 60 * 1000)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(msgBody))

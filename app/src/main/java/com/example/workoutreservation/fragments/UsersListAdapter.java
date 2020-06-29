@@ -48,7 +48,6 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.User
             this.binding=binding;
 
         }
-        //todo fix layout
         //todo add reservation count
         public void bind(User user){
             binding.userNameText.setText(user.getFirstName()+" "+user.getFamilyName());

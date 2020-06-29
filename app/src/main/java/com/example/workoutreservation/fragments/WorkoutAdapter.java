@@ -76,11 +76,8 @@ public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.WorkoutV
 
 
         public WorkoutViewHolder(@NonNull FragmentWorkoutListItemBinding binding) {
-
             super(binding.getRoot());
             this.binding = binding;
-
-
         }
 
         public void bind(Workout workout, MainActivity mainActivity, boolean previousDayVisibility) {
@@ -99,10 +96,10 @@ public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.WorkoutV
                 binding.date.setText(workout.getDateText());
                 binding.workoutTime.setText(workout.getTimeText());
                 binding.workoutName.setText(workout.getDescription());
-                binding.freePlacesText.setText("free places "+workout.getFreePlaces()+" / "+workout.getMaxGroupSize());
+                binding.freePlacesText.setText("free places " + workout.getFreePlaces() + " / " + workout.getMaxGroupSize());
             }
             User user = mainActivity.getUser();
-            if (user.getRights()==1){
+            if (user.getRights() == 1) {
                 binding.date.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -111,23 +108,24 @@ public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.WorkoutV
                     }
                 });
             }
+            if (workout.getDateTime() > System.currentTimeMillis()) {
+                binding.workoutItemLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Log.d("OnItemClick", "Workout ID " + workout.getWorkoutId());
 
-            binding.workoutItemLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.d("OnItemClick", "Workout ID " + workout.getWorkoutId());
+                        Log.d("Adapter", "user Id " + mainActivity.getUser().getUserId());
+                        NavDirections action = WorkoutListDirections.actionWorkoutListToReservationConfirm2(
+                                workout.getWorkoutId(),
+                                mainActivity.getUser().getUserId(),
+                                workout.getDateTime(),
+                                workout.getDescription(),
+                                workout.getFreePlaces());
+                        Navigation.findNavController(binding.getRoot()).navigate(action);
 
-                    Log.d("Adapter", "user Id " + mainActivity.getUser().getUserId());
-                    NavDirections action = WorkoutListDirections.actionWorkoutListToReservationConfirm2(
-                            workout.getWorkoutId(),
-                            mainActivity.getUser().getUserId(),
-                            workout.getDateTime(),
-                            workout.getDescription(),
-                            workout.getFreePlaces());
-                    Navigation.findNavController(binding.getRoot()).navigate(action);
-
-                }
-            });
+                    }
+                });
+            }
         }
 
 
