@@ -43,6 +43,9 @@
         <action
             android:id="@+id/action_login_to_userDataUpdate"
             app:destination="@id/userDataUpdate" />
+        <action
+            android:id="@+id/action_login_to_resetPassword"
+            app:destination="@id/resetPassword" />
     </fragment>
     <fragment
         android:id="@+id/myMenu"
@@ -207,6 +210,15 @@
         tools:layout="@layout/fragment_log_list">
         <argument android:name="userId"
             app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/resetPassword"
+        android:name="com.example.workoutreservation.fragments.ResetPassword"
+        android:label="Reset password"
+        tools:layout="@layout/fragment_reset_password" >
+        <argument
+            android:name="email"
+            app:argType="string" />
     </fragment>
 </navigation>
 

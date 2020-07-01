@@ -19,6 +19,7 @@ import com.example.workoutreservation.ApiService;
 import com.example.workoutreservation.MainActivity;
 import com.example.workoutreservation.User;
 import com.example.workoutreservation.databinding.FragmentLoginBinding;
+import com.google.android.material.navigation.NavigationView;
 
 import java.io.IOException;
 
@@ -47,8 +48,6 @@ public class Login extends Fragment {
                 String hashedPass= userLoging.hashPass(password);
 
                 mainActivity.getService().login(email, hashedPass).enqueue(new Callback<User>() {
-
-
                     @Override
                     public void onResponse(Call<User> call, Response<User> response) {
                         User user = response.body();
@@ -68,17 +67,21 @@ public class Login extends Fragment {
                         Log.d("Login", "unknown failure");
                         t.printStackTrace();
                     }
-
-
                 });
-
-//        return binding.getRoot();
             }
         });
+
         binding.signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 NavDirections action =LoginDirections.actionLoginToUserDataUpdate();
+                Navigation.findNavController(binding.getRoot()).navigate(action);
+            }
+        });
+        binding.resetPasswordButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavDirections action=LoginDirections.actionLoginToResetPassword(binding.userEmailText.getText().toString());
                 Navigation.findNavController(binding.getRoot()).navigate(action);
             }
         });

@@ -17,6 +17,9 @@
         android:id="@+id/userData"
         android:title="@string/my_account" />
     <item
+        android:id="@+id/usersList"
+        android:title="@string/clients_list" />
+    <item
         android:id="@+id/login"
         android:title="@string/login" />
 </menu>

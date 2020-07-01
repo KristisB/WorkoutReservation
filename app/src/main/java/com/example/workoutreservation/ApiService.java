@@ -80,4 +80,10 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("get_operation_log")
     Call<List<LogDataEntry>> getLog(@Field("userId") int userId);
+
+    @FormUrlEncoded
+    @POST("reset_password")
+    Call<ResponseBody> resetPassword(@Field("email") String email,
+                                     @Field("newPassword") String newPassword,
+                                     @Field("encryptedPassword") String encryptedPassword);
 }

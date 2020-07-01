@@ -117,19 +117,6 @@ public class UserBalanceUpdate extends Fragment {
             public void onClick(View v) {
                 NavDirections action = UserBalanceUpdateDirections.actionUserBalanceUpdateToLogList(userA.getUserId());
                 Navigation.findNavController(binding.getRoot()).navigate(action);
-//                mainActivity.getService().getLog(userA.getUserId()).enqueue(new Callback<List<LogDataEntry>>() {
-//                    @Override
-//                    public void onResponse(Call<List<LogDataEntry>> call, Response<List<LogDataEntry>> response) {
-//                        List<LogDataEntry> logData= new ArrayList<>();
-//                        logData =response.body();
-//                        Log.d("UserBalanceUpdate","getLog method called and object received "+logData.size());
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<List<LogDataEntry>> call, Throwable t) {
-//                        Log.d("UserBalanceUpdate", "some failure  "+t);
-//                    }
-//                });
             }
         });
 

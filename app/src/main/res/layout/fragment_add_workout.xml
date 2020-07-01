@@ -51,16 +51,16 @@ android:layout_margin="10dp"
             android:text="2"
             android:textColor="#000000" />
 
-        <EditText
-            android:id="@+id/workoutDurationText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#CCFFFFFF"
-            android:hint="@string/workout_duration"
-            android:inputType="time"
-            android:layout_margin="10dp"
-            android:padding="10dp"
-            android:textColor="#000000" />
+<!--        <EditText-->
+<!--            android:id="@+id/workoutDurationText"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:background="#CCFFFFFF"-->
+<!--            android:hint="@string/workout_duration"-->
+<!--            android:inputType="time"-->
+<!--            android:layout_margin="10dp"-->
+<!--            android:padding="10dp"-->
+<!--            android:textColor="#000000" />-->
 
         <EditText
             android:id="@+id/workoutDescriptionText"

@@ -3,6 +3,7 @@ package com.example.workoutreservation.fragments;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -17,6 +18,7 @@ import com.example.workoutreservation.User;
 import com.example.workoutreservation.databinding.FragmentMenuBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
@@ -52,8 +54,6 @@ public class MyMenu extends Fragment {
         binding = FragmentMenuBinding.inflate(inflater, container, false);
         User user = mainActivity.getUser();
         Log.d("LOGIN", "USER ID: " + user.getUserId() + "USER NAME: " + user.getFirstName());
-
-
 
         //updating user info from DB on Start up
         mainActivity.getService().getUserData(user.getUserId()).enqueue(new Callback<User>() {
@@ -112,9 +112,9 @@ public class MyMenu extends Fragment {
             });
         }
 
-        // workouts list Button
+        // workouts Button
         if (user.getUserId() == -1) {
-            binding.myWorkoutsButton.setVisibility(View.GONE);
+            binding.workoutsListButton.setVisibility(View.GONE);
         } else {
             binding.workoutsListButton.setOnClickListener(v -> {
                 NavDirections action = MyMenuDirections.actionMyMenuToWorkoutList();
@@ -123,7 +123,7 @@ public class MyMenu extends Fragment {
         }
 
         // add workout Button
-        if ((user.getUserId() == -1) && (user.getRights() != 1)) {
+        if (user.getRights() != 1) {
             binding.addWorkoutButton.setVisibility(View.GONE);
         } else {
             binding.addWorkoutButton.setOnClickListener(v -> {
@@ -131,8 +131,8 @@ public class MyMenu extends Fragment {
                 Navigation.findNavController(binding.getRoot()).navigate(action);
             });
         }
-        // add my workout Button
-        if ((user.getUserId() == -1) || (user.getRights() != 1)) {
+        // add my workouts Button
+        if (user.getUserId() == -1) {
             binding.myWorkoutsButton.setVisibility(View.GONE);
         } else {
             binding.myWorkoutsButton.setOnClickListener(v -> {
@@ -149,8 +149,8 @@ public class MyMenu extends Fragment {
                 Navigation.findNavController(binding.getRoot()).navigate(action);
             });
         }
-        // add clients list Button
-        if ((user.getUserId() == -1) || (user.getRights() != 1)) {
+        // clients list Button
+        if  (user.getRights() != 1) {
             binding.clientsListButton.setVisibility(View.GONE);
         } else {
             binding.clientsListButton.setOnClickListener(v -> {

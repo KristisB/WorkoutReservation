@@ -1,50 +1,26 @@
 package com.example.workoutreservation;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
-import androidx.databinding.DataBindingUtil;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
-import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.AttributeSet;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.example.workoutreservation.databinding.ActivityMainBinding;
-import com.example.workoutreservation.fragments.AddWorkout;
-import com.example.workoutreservation.fragments.Login;
-import com.example.workoutreservation.fragments.MyMenuDirections;
-import com.example.workoutreservation.fragments.MyWaitlists;
-import com.example.workoutreservation.fragments.MyWorkouts;
-import com.example.workoutreservation.fragments.UserData;
-import com.example.workoutreservation.fragments.WorkoutList;
-import com.example.workoutreservation.fragments.WorkoutListDirections;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.FirebaseApp;
 
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.moshi.MoshiConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
@@ -57,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String RIGHTS = "rights";
     public static final String CREDITS = "credits";
     private int newIntentDirection;
+    private NavigationView navigationView;
 
     public int getNewIntentDirection() {
         return newIntentDirection;
@@ -88,6 +65,12 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+
+//        Menu menu = navigationView.getMenu();
+//        if (user1.getRights() != 1) {
+//            menu.findItem(R.id.usersList).setVisible(false);
+//        }
+
     }
 
 
@@ -96,15 +79,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        sharedPref = getPreferences(Context.MODE_PRIVATE);
 
-
-//        String fragmentName=getIntent().getStringExtra("fragment");
-//        if(fragmentName!=null){
-//            Fragment fragment = new MyWaitlists();
-//            Log.d("Main Activity", "onCreate: INTENT EXTRA RECEIVED"+ fragmentName);
-//            getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, fragment).addToBackStack(null).commit();
-//
-//        }
 
         FirebaseApp.initializeApp(this);
 
@@ -115,11 +91,16 @@ public class MainActivity extends AppCompatActivity {
 
         //setting up drawer menu
         DrawerLayout drawerLayout = binding.drawerLayout;
-        NavigationView navigationView = binding.navView;
+        navigationView = binding.navView;
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         mAppBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+        Menu menu = navigationView.getMenu();
+        User logedUser = getUser();
+        if (logedUser.getRights() != 1) {
+            menu.findItem(R.id.usersList).setVisible(false);
+        }
 
         //makes drawer to appear by clicking action bar icon
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.Open, R.string.Close);
@@ -135,7 +116,6 @@ public class MainActivity extends AppCompatActivity {
                 .addConverterFactory(MoshiConverterFactory.create())
                 .build();
         service = retrofit.create(ApiService.class);
-        sharedPref = getPreferences(Context.MODE_PRIVATE);
     }
 
     @Override
