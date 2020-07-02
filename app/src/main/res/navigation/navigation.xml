@@ -31,6 +31,12 @@
         <action
             android:id="@+id/action_workoutList_to_addWorkout"
             app:destination="@id/addWorkout" />
+        <action
+            android:id="@+id/action_workoutList_to_cancelReservation"
+            app:destination="@id/cancelReservation" />
+        <action
+            android:id="@+id/action_workoutList_to_myWaitlists"
+            app:destination="@id/myWaitlists" />
     </fragment>
     <fragment
         android:id="@+id/login"

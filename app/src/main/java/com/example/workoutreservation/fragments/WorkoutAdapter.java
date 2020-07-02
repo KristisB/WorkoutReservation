@@ -1,5 +1,6 @@
 package com.example.workoutreservation.fragments;
 
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.workoutreservation.MainActivity;
+import com.example.workoutreservation.R;
 import com.example.workoutreservation.User;
 import com.example.workoutreservation.Workout;
 import com.example.workoutreservation.databinding.FragmentWorkoutListItemBinding;
@@ -97,8 +99,22 @@ public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.WorkoutV
                 binding.workoutTime.setText(workout.getTimeText());
                 binding.workoutName.setText(workout.getDescription());
                 binding.freePlacesText.setText("free places " + workout.getFreePlaces() + " / " + workout.getMaxGroupSize());
+                if (workout.getExtraInfo1() > 0) {
+                    binding.workoutListItemLayout.setBackgroundColor(Color.parseColor("#CC666666"));
+                    binding.workoutItemIconImage.setImageResource(R.drawable.ic_check_circle);
+                } else {
+                    if (workout.getExtraInfo2() > 0) {
+                        binding.workoutListItemLayout.setBackgroundColor(Color.parseColor("#CC999999"));
+                        binding.workoutItemIconImage.setImageResource(R.drawable.ic_schedule);
+                    } else {
+                        binding.workoutListItemLayout.setBackgroundColor(Color.parseColor("#CCEEEEEE"));
+                        binding.workoutItemIconImage.setImageResource(R.drawable.ic_right);
+                    }
+                }
             }
+
             User user = mainActivity.getUser();
+
             if (user.getRights() == 1) {
                 binding.date.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -115,13 +131,27 @@ public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.WorkoutV
                         Log.d("OnItemClick", "Workout ID " + workout.getWorkoutId());
 
                         Log.d("Adapter", "user Id " + mainActivity.getUser().getUserId());
-                        NavDirections action = WorkoutListDirections.actionWorkoutListToReservationConfirm2(
+                        NavDirections actionToBookWorkout = WorkoutListDirections.actionWorkoutListToReservationConfirm2(
                                 workout.getWorkoutId(),
                                 mainActivity.getUser().getUserId(),
                                 workout.getDateTime(),
                                 workout.getDescription(),
                                 workout.getFreePlaces());
-                        Navigation.findNavController(binding.getRoot()).navigate(action);
+                        NavDirections actionToCancelBooking = WorkoutListDirections.actionWorkoutListToCancelReservation(
+                                workout.getWorkoutId(),
+                                workout.getDateTime(),
+                                workout.getDescription());
+                        NavDirections actionToWaitlists = WorkoutListDirections.actionWorkoutListToMyWaitlists();
+                        if (workout.getExtraInfo1() > 0) {
+                            Navigation.findNavController(binding.getRoot()).navigate(actionToCancelBooking);
+                        } else {
+                            if(workout.getExtraInfo2()>0) {
+                                Navigation.findNavController(binding.getRoot()).navigate(actionToWaitlists);
+                            } else {
+                                Navigation.findNavController(binding.getRoot()).navigate(actionToBookWorkout);
+
+                            }
+                        }
 
                     }
                 });

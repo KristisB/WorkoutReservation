@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.workoutreservation.MainActivity;
+import com.example.workoutreservation.User;
 import com.example.workoutreservation.Workout;
 import com.example.workoutreservation.databinding.FragmentWorkoutListBinding;
 
@@ -30,7 +31,6 @@ public class WorkoutList extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-
         FragmentWorkoutListBinding binding = FragmentWorkoutListBinding.inflate(inflater, container, false);
         binding.workoutsRecyclerView.setHasFixedSize(true);
 
@@ -45,7 +45,8 @@ public class WorkoutList extends Fragment {
 
 
         MainActivity mainActivity = (MainActivity) requireActivity();
-        mainActivity.getService().getWorkouts(dateS).enqueue(new Callback<List<Workout>>() {
+        User user= mainActivity.getUser();
+        mainActivity.getService().getWorkouts(dateS, user.getUserId()).enqueue(new Callback<List<Workout>>() {
             List<Workout> workouts = new ArrayList<>();
 
             @Override

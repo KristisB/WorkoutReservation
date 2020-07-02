@@ -45,6 +45,7 @@
                 tools:text="Free places 0/2"/>
 
             <ImageView
+                android:id="@+id/workout_item_icon_image"
                 android:src="@drawable/ic_right"
                 android:layout_width="30dp"
                 android:layout_height="match_parent"

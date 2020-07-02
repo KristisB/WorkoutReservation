@@ -38,6 +38,10 @@ public interface ApiService {
     Call<List<Workout>> getWorkouts(@Field("date") String date);
 
     @FormUrlEncoded
+    @POST("get_workouts_with_extra")
+    Call<List<Workout>> getWorkouts(@Field("date") String date, @Field("userId") int userId);
+
+    @FormUrlEncoded
     @POST("add_workout")
     Call<ResponseBody> addWorkout(@Field("date") long date, @Field("maxGroupSize") int maxGroupSize, @Field("description") String description);
 

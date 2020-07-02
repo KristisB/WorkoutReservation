@@ -10,7 +10,25 @@ public class Workout {
     private int maxGroupSize;
     private String description;
     private int freePlaces;
+    private int extraInfo1;
+    private int extraInfo2;
     public static final long TIME_TO_CANCEL = 43200000;
+
+    public int getExtraInfo2() {
+        return extraInfo2;
+    }
+
+    public void setExtraInfo2(int extraInfo2) {
+        this.extraInfo2 = extraInfo2;
+    }
+
+    public int getExtraInfo1() {
+        return extraInfo1;
+    }
+
+    public void setExtraInfo1(int extraInfo1) {
+        this.extraInfo1 = extraInfo1;
+    }
 
     public int getFreePlaces() {
         return freePlaces;
