@@ -30,6 +30,15 @@ public class MyMessagingService extends FirebaseMessagingService {
         super.onMessageReceived(remoteMessage);
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
+        if (remoteMessage.getData().size() > 0) {
+            Log.d("MyMessagingService", "Message data payload: " + remoteMessage.getData());
+        }
+
+        // Check if message contains a notification payload.
+        if (remoteMessage.getNotification() != null) {
+            Log.d("MyMessagingService", "Message Notification Body: " + remoteMessage.getNotification().getBody());
+        }
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             setupChannels(notificationManager);
         }
@@ -55,6 +64,8 @@ public class MyMessagingService extends FirebaseMessagingService {
     }
 
     private void showNotification(String msgTitle, String msgBody) {
+//        android.os.Debug.waitForDebugger();
+
         String extra="";
         if(msgTitle.equals("Workout reservation availabe")){
             extra="MyWaitlists";
@@ -67,7 +78,7 @@ public class MyMessagingService extends FirebaseMessagingService {
 
         intent.putExtra("fragment", extra);
         PendingIntent pendingIntent =
-                PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+                PendingIntent.getActivity(this, 0, intent,  PendingIntent.FLAG_UPDATE_CURRENT);
 
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, ADMIN_CHANEL_ID);
@@ -75,7 +86,7 @@ public class MyMessagingService extends FirebaseMessagingService {
         notificationBuilder.setSmallIcon(R.drawable.ic_schedule)
                 .setContentTitle(msgTitle)
                 .setContentText(msgBody)
-                .setAutoCancel(false)
+                .setAutoCancel(true)
                 .setContentIntent(pendingIntent)
                 .setTimeoutAfter(15 * 60 * 1000)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(msgBody))

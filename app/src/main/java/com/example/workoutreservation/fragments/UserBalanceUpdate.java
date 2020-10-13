@@ -1,7 +1,6 @@
 package com.example.workoutreservation.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,18 +12,14 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
-import com.example.workoutreservation.LogDataEntry;
 import com.example.workoutreservation.MainActivity;
-import com.example.workoutreservation.User;
+import com.example.workoutreservation.SharedData;
+import com.example.workoutreservation.components.AppComponents;
+import com.example.workoutreservation.components.ContextModule;
+import com.example.workoutreservation.components.DaggerAppComponents;
+import com.example.workoutreservation.model.User;
 import com.example.workoutreservation.databinding.FragmentUserBalanceUpdateBinding;
-import com.example.workoutreservation.databinding.FragmentUserDataBinding;
 
-import org.json.JSONArray;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -38,12 +33,15 @@ public class UserBalanceUpdate extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
         FragmentUserBalanceUpdateBinding binding = FragmentUserBalanceUpdateBinding.inflate(inflater, container, false);
-        MainActivity mainActivity = (MainActivity) getActivity();
+        AppComponents appComponents = DaggerAppComponents.builder()
+                .contextModule(new ContextModule(getContext()))
+                .build();
+
         UserBalanceUpdateArgs args = UserBalanceUpdateArgs.fromBundle(requireArguments());
-        int referenceId = mainActivity.getUser().getUserId();
+        int referenceId = appComponents.getSharedData().getUser().getUserId();
         User userA = new User();
         userA.setUserId(args.getUserId());
-        mainActivity.getService().getUserData(userA.getUserId()).enqueue(new Callback<User>() {
+        appComponents.getApiService().getUserData(userA.getUserId()).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 User user = response.body();
@@ -69,7 +67,7 @@ public class UserBalanceUpdate extends Fragment {
                 int addCredits = 0;
                 if (!binding.addCreditsEditText.getText().toString().isEmpty()) {
                     addCredits = Integer.parseInt(binding.addCreditsEditText.getText().toString());
-                    mainActivity.getService().updateBalance(userA.getUserId(), addCredits, referenceId).enqueue(new Callback<Integer>() {
+                    appComponents.getApiService().updateBalance(userA.getUserId(), addCredits, referenceId).enqueue(new Callback<Integer>() {
                         @Override
                         public void onResponse(Call<Integer> call, Response<Integer> response) {
                             Toast.makeText(requireContext(), "New balance " + response.body(), Toast.LENGTH_SHORT).show();
@@ -93,7 +91,7 @@ public class UserBalanceUpdate extends Fragment {
                 }
 
                 if (!(binding.rightsCheckBox.isChecked() == (userA.getRights() == 1))) {  //checks if rights were changed
-                    mainActivity.getService().changeRights(userA.getUserId(), newRights).enqueue(new Callback<Integer>() {
+                    appComponents.getApiService().changeRights(userA.getUserId(), newRights).enqueue(new Callback<Integer>() {
                         @Override
                         public void onResponse(Call<Integer> call, Response<Integer> response) {
                             Toast.makeText(requireContext(), "Rights changed", Toast.LENGTH_SHORT).show();

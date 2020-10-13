@@ -9,7 +9,7 @@ import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.workoutreservation.User;
+import com.example.workoutreservation.model.User;
 import com.example.workoutreservation.databinding.FragmentUserListItemBinding;
 
 import java.util.ArrayList;

@@ -12,7 +12,11 @@ import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 import com.example.workoutreservation.MainActivity;
-import com.example.workoutreservation.User;
+import com.example.workoutreservation.SharedData;
+import com.example.workoutreservation.components.AppComponents;
+import com.example.workoutreservation.components.ContextModule;
+import com.example.workoutreservation.components.DaggerAppComponents;
+import com.example.workoutreservation.model.User;
 import com.example.workoutreservation.databinding.FragmentUserDataBinding;
 
 import retrofit2.Call;
@@ -28,14 +32,17 @@ public class UserData extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
         FragmentUserDataBinding binding = FragmentUserDataBinding.inflate(inflater, container, false);
-        MainActivity mainActivity = (MainActivity) getActivity();
-        User user = mainActivity.getUser();
-        mainActivity.getService().getUserData(user.getUserId()).enqueue(new Callback<User>() {
+        AppComponents appComponents = DaggerAppComponents.builder()
+                .contextModule(new ContextModule(getContext()))
+                .build();
+
+        User user = appComponents.getSharedData().getUser();
+        appComponents.getApiService().getUserData(user.getUserId()).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 User user = response.body();
                 if (response.isSuccessful()) {
-                    mainActivity.saveUser(user);
+                    appComponents.getSharedData().saveUser(user);
                     binding.userNameText.setText(user.getFirstName() + " " + user.getFamilyName());
                     binding.userEmailText.setText(user.getEmail());
                     binding.balanceText.setText(Integer.toString(user.getCredits()) + " Credits");
@@ -47,7 +54,7 @@ public class UserData extends Fragment {
 
             }
         });
-//        user=mainActivity.getUser();
+
         binding.logOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,7 +66,7 @@ public class UserData extends Fragment {
                 user.setPhone("");
                 user.setRights(0);
                 user.setCredits(0);
-                mainActivity.saveUser(user);
+                appComponents.getSharedData().saveUser(user);
                 NavDirections action = UserDataDirections.actionUserDataToMyMenu();
                 Navigation.findNavController(binding.getRoot()).navigate(action);
 

@@ -10,10 +10,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ReportFragment;
 
 import com.example.workoutreservation.MainActivity;
-import com.example.workoutreservation.User;
+import com.example.workoutreservation.SharedData;
+import com.example.workoutreservation.components.AppComponents;
+import com.example.workoutreservation.components.ContextModule;
+import com.example.workoutreservation.components.DaggerAppComponents;
+import com.example.workoutreservation.model.User;
 import com.example.workoutreservation.databinding.FragmentResetPasswordBinding;
 
 import java.io.IOException;
@@ -28,6 +31,10 @@ public class ResetPassword extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         FragmentResetPasswordBinding binding = FragmentResetPasswordBinding.inflate(inflater, container, false);
+        AppComponents appComponents = DaggerAppComponents.builder()
+                .contextModule(new ContextModule(getContext()))
+                .build();
+
         binding.resetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -43,8 +50,7 @@ public class ResetPassword extends Fragment {
                 if (email.isEmpty()) {
                     Toast.makeText(getContext(), "E-mail not entered", Toast.LENGTH_SHORT).show();
                 } else {
-                    MainActivity mainActivity = (MainActivity) getActivity();
-                    mainActivity.getService().resetPassword(email, newPassword, encryptedPassword).enqueue(new Callback<ResponseBody>() {
+                    appComponents.getApiService().resetPassword(email, newPassword, encryptedPassword).enqueue(new Callback<ResponseBody>() {
                         @Override
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                             try {

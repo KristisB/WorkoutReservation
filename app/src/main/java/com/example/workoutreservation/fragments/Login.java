@@ -15,28 +15,30 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
-import com.example.workoutreservation.ApiService;
 import com.example.workoutreservation.MainActivity;
-import com.example.workoutreservation.User;
+import com.example.workoutreservation.SharedData;
+import com.example.workoutreservation.components.AppComponents;
+import com.example.workoutreservation.components.ContextModule;
+import com.example.workoutreservation.components.DaggerAppComponents;
+import com.example.workoutreservation.model.User;
 import com.example.workoutreservation.databinding.FragmentLoginBinding;
-import com.google.android.material.navigation.NavigationView;
 
-import java.io.IOException;
-
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.moshi.MoshiConverterFactory;
 
 public class Login extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final FragmentLoginBinding binding = FragmentLoginBinding.inflate(inflater, container, false);
-        MainActivity mainActivity = (MainActivity) requireActivity();
+
+        AppComponents appComponents = DaggerAppComponents.builder()
+                .contextModule(new ContextModule(getContext()))
+                .build();
+
         User userLoging = new User();
+
 
         binding.loginButton.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
@@ -46,12 +48,12 @@ public class Login extends Fragment {
                 String password = binding.userPasswordText.getText().toString();
                 String hashedPass= userLoging.hashPass(password);
 
-                mainActivity.getService().login(email, hashedPass).enqueue(new Callback<User>() {
+                appComponents.getApiService().login(email, hashedPass).enqueue(new Callback<User>() {
                     @Override
                     public void onResponse(Call<User> call, Response<User> response) {
                         User user = response.body();
                         if (response.isSuccessful()) {
-                            mainActivity.saveUser(user);
+                            appComponents.getSharedData().saveUser(user);
                             NavDirections action = LoginDirections.actionLoginToWorkoutList();
                             Navigation.findNavController(view).navigate(action);
                             Log.d("Login", user.getFirstName() + " " + user.getFamilyName() + " login rights are " + user.getRights());

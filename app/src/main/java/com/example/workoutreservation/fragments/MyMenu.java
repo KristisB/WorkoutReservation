@@ -3,7 +3,6 @@ package com.example.workoutreservation.fragments;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -14,15 +13,16 @@ import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 import com.example.workoutreservation.MainActivity;
-import com.example.workoutreservation.User;
+import com.example.workoutreservation.SharedData;
+import com.example.workoutreservation.components.AppComponents;
+import com.example.workoutreservation.components.ContextModule;
+import com.example.workoutreservation.components.DaggerAppComponents;
+import com.example.workoutreservation.model.User;
 import com.example.workoutreservation.databinding.FragmentMenuBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
-
-import java.util.Calendar;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -39,10 +39,12 @@ public class MyMenu extends Fragment {
         MainActivity mainActivity = (MainActivity) requireActivity();
         if(mainActivity.getNewIntentDirection()==1){
             NavDirections action = MyMenuDirections.actionMyMenuToMyWaitlists();
+            mainActivity.setNewIntentDirection(0);
             Navigation.findNavController(binding.getRoot()).navigate(action);
         }
         if(mainActivity.getNewIntentDirection()==2){
             NavDirections action = MyMenuDirections.actionMyMenuToMyWorkouts();
+            mainActivity.setNewIntentDirection(0);
             Navigation.findNavController(binding.getRoot()).navigate(action);
         }
     }
@@ -50,18 +52,22 @@ public class MyMenu extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        MainActivity mainActivity = (MainActivity) requireActivity();
+
+        AppComponents appComponents = DaggerAppComponents.builder()
+                .contextModule(new ContextModule(getContext()))
+                .build();
+        User user=  appComponents.getSharedData().getUser();
+
         binding = FragmentMenuBinding.inflate(inflater, container, false);
-        User user = mainActivity.getUser();
         Log.d("LOGIN", "USER ID: " + user.getUserId() + "USER NAME: " + user.getFirstName());
 
         //updating user info from DB on Start up
-        mainActivity.getService().getUserData(user.getUserId()).enqueue(new Callback<User>() {
+        appComponents.getApiService().getUserData(user.getUserId()).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 User user = response.body();
                 if (response.isSuccessful()) {
-                    mainActivity.saveUser(user);
+                    appComponents.getSharedData().saveUser(user);
                     Log.d("MyMenu","User data synchronised from DB");
 
                 }
@@ -79,7 +85,7 @@ public class MyMenu extends Fragment {
                 // Get new Instance ID token and save it to DB
                 String token = task.getResult().getToken();
                 Log.d("MyMenu", "device token " + token);
-                mainActivity.getService().saveToken(user.getUserId(),token).enqueue(new Callback<ResponseBody>() {
+                appComponents.getApiService().saveToken(user.getUserId(),token).enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         Log.d("MyMenu","token saved in DB "+ response.message());

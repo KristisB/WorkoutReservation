@@ -1,7 +1,6 @@
 package com.example.workoutreservation.fragments;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.CalendarContract;
@@ -18,10 +17,13 @@ import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 import com.example.workoutreservation.MainActivity;
-import com.example.workoutreservation.User;
-import com.example.workoutreservation.Workout;
+import com.example.workoutreservation.SharedData;
+import com.example.workoutreservation.components.AppComponents;
+import com.example.workoutreservation.components.ContextModule;
+import com.example.workoutreservation.components.DaggerAppComponents;
+import com.example.workoutreservation.model.User;
+import com.example.workoutreservation.model.Workout;
 import com.example.workoutreservation.databinding.FragmentConfirmReservationBinding;
-import com.example.workoutreservation.databinding.FragmentLoginBinding;
 
 import java.io.IOException;
 
@@ -35,10 +37,13 @@ public class ReservationConfirm extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final FragmentConfirmReservationBinding binding = FragmentConfirmReservationBinding.inflate(inflater, container, false);
-        MainActivity mainActivity = (MainActivity) requireActivity();
+        AppComponents appComponents = DaggerAppComponents.builder()
+                .contextModule(new ContextModule(getContext()))
+                .build();
+
         ReservationConfirmArgs args = ReservationConfirmArgs.fromBundle(requireArguments());
         Workout workout = new Workout();
-        int userId = mainActivity.getUser().getUserId();
+        int userId = appComponents.getSharedData().getUser().getUserId();
         workout.setWorkoutId(args.getWorkoutID());
 
         workout.setDateTime(args.getWorkoutDate());
@@ -46,18 +51,18 @@ public class ReservationConfirm extends Fragment {
         workout.setFreePlaces(args.getFreePlaces());
         binding.reservationInfoText.setText(workout.getDateText() + " " + workout.getTimeText() + " " + workout.getDescription());
 
-        Log.d("ReserveConfirmation", "userID " + userId + "; workoutId" + workout.getWorkoutId());
+        Log.d("ReserveConfirmation", "userID " + userId + "; workoutId " + workout.getWorkoutId() + "; free places "+ workout.getFreePlaces());
         if (workout.getFreePlaces() > 0) {
             binding.addToWaitlistButton.setVisibility(View.GONE);
             binding.reservationConfirmButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
-                    mainActivity.getService().reserve(workout.getWorkoutId(), userId).enqueue(new Callback<ResponseBody>() {
+                    appComponents.getApiService().reserve(workout.getWorkoutId(), userId).enqueue(new Callback<ResponseBody>() {
 
                         @Override
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                            User user = mainActivity.getUser();
+                            User user = appComponents.getSharedData().getUser();
                             if (response.isSuccessful()) {
                                 //adds reminder into calendar
                                 if (response.code() == 201) {
@@ -91,10 +96,10 @@ public class ReservationConfirm extends Fragment {
 
                 @Override
                 public void onClick(View v) {
-                    mainActivity.getService().addWaitlist(workout.getWorkoutId(), userId).enqueue(new Callback<ResponseBody>() {
+                    appComponents.getApiService().addWaitlist(workout.getWorkoutId(), userId).enqueue(new Callback<ResponseBody>() {
                         @Override
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                            User user = mainActivity.getUser();
+                            User user = appComponents.getSharedData().getUser();
                             Toast.makeText(requireContext(), "Success", Toast.LENGTH_SHORT).show();
 
                             NavDirections action = ReservationConfirmDirections.actionReservationConfirmToWorkoutList();

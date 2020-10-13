@@ -1,5 +1,6 @@
 package com.example.workoutreservation.fragments;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,8 +12,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.workoutreservation.MainActivity;
-import com.example.workoutreservation.User;
-import com.example.workoutreservation.Workout;
+import com.example.workoutreservation.SharedData;
+import com.example.workoutreservation.components.AppComponents;
+import com.example.workoutreservation.components.ContextModule;
+import com.example.workoutreservation.components.DaggerAppComponents;
+import com.example.workoutreservation.model.User;
+import com.example.workoutreservation.model.Workout;
 import com.example.workoutreservation.databinding.FragmentWorkoutListBinding;
 
 import java.util.ArrayList;
@@ -43,10 +48,12 @@ public class WorkoutList extends Fragment {
         today.set(Calendar.MILLISECOND, 0);
         String dateS = Long.toString(today.getTimeInMillis());
 
+        AppComponents appComponents = DaggerAppComponents.builder()
+                .contextModule(new ContextModule(getContext()))
+                .build();
 
-        MainActivity mainActivity = (MainActivity) requireActivity();
-        User user= mainActivity.getUser();
-        mainActivity.getService().getWorkouts(dateS, user.getUserId()).enqueue(new Callback<List<Workout>>() {
+        User user= appComponents.getSharedData().getUser();
+        appComponents.getApiService().getWorkouts(dateS, user.getUserId()).enqueue(new Callback<List<Workout>>() {
             List<Workout> workouts = new ArrayList<>();
 
             @Override
@@ -56,7 +63,7 @@ public class WorkoutList extends Fragment {
                 if (response.isSuccessful()) {
                     Log.d("workoutsList", "workouts received " + rawList.size());
                     List<Workout> readyList = new ArrayList<>(listForRecycler(rawList));
-                    binding.workoutsRecyclerView.setAdapter(new WorkoutAdapter(readyList,mainActivity));
+                    binding.workoutsRecyclerView.setAdapter(new WorkoutAdapter(readyList,user));
                 } else {
                     Log.d("workoutsList", "workouts not received");
                 }

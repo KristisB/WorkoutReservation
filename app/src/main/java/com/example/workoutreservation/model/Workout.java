@@ -1,4 +1,4 @@
-package com.example.workoutreservation;
+package com.example.workoutreservation.model;
 
 import java.util.Calendar;
 import java.util.Locale;

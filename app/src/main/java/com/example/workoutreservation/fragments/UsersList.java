@@ -11,7 +11,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.workoutreservation.MainActivity;
-import com.example.workoutreservation.User;
+import com.example.workoutreservation.SharedData;
+import com.example.workoutreservation.components.AppComponents;
+import com.example.workoutreservation.components.ContextModule;
+import com.example.workoutreservation.components.DaggerAppComponents;
+import com.example.workoutreservation.model.User;
 import com.example.workoutreservation.databinding.FragmentUserListBinding;
 
 import java.util.ArrayList;
@@ -27,12 +31,15 @@ public class UsersList extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         FragmentUserListBinding binding = FragmentUserListBinding.inflate(inflater, container, false);
         binding.usersRecyclerView.setHasFixedSize(true);
-        MainActivity mainActivity = (MainActivity) getActivity();
+        AppComponents appComponents = DaggerAppComponents.builder()
+                .contextModule(new ContextModule(getContext()))
+                .build();
+
         List<User> userList=new ArrayList<>();
 
-        User user = mainActivity.getUser();
+        User user = appComponents.getSharedData().getUser();
         if (user.getRights() == 1) {
-            mainActivity.getService().getAllUsers(user.getRights()).enqueue(new Callback<List<User>>() {
+            appComponents.getApiService().getAllUsers(user.getRights()).enqueue(new Callback<List<User>>() {
                 @Override
                 public void onResponse(Call<List<User>> call, Response<List<User>> response) {
                     List<User> usersList = new ArrayList<>();

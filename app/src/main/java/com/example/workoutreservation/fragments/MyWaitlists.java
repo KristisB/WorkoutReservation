@@ -1,5 +1,6 @@
 package com.example.workoutreservation.fragments;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,15 +10,15 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavDirections;
-import androidx.navigation.Navigation;
 
 import com.example.workoutreservation.MainActivity;
-import com.example.workoutreservation.User;
-import com.example.workoutreservation.WaitlistItem;
-import com.example.workoutreservation.Workout;
+import com.example.workoutreservation.SharedData;
+import com.example.workoutreservation.components.AppComponents;
+import com.example.workoutreservation.components.ContextModule;
+import com.example.workoutreservation.components.DaggerAppComponents;
+import com.example.workoutreservation.model.User;
+import com.example.workoutreservation.model.WaitlistItem;
 import com.example.workoutreservation.databinding.FragmentMyWaitlistsBinding;
-import com.example.workoutreservation.databinding.FragmentMyWorkoutsBinding;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,9 +36,12 @@ public class MyWaitlists extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentMyWaitlistsBinding.inflate(inflater, container, false);
-        MainActivity mainActivity = (MainActivity) getActivity();
-        User user = mainActivity.getUser();
-        mainActivity.getService().getMyWaitlists(user.getUserId()).enqueue(new Callback<List<WaitlistItem>>() {
+        AppComponents appComponents = DaggerAppComponents.builder()
+                .contextModule(new ContextModule(getContext()))
+                .build();
+
+        User user = appComponents.getSharedData().getUser();
+        appComponents.getApiService().getMyWaitlists(user.getUserId()).enqueue(new Callback<List<WaitlistItem>>() {
             @Override
             public void onResponse(Call<List<WaitlistItem>> call, Response<List<WaitlistItem>> response) {
                 List<WaitlistItem> rawList = new ArrayList<>();

@@ -5,7 +5,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -13,11 +12,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.workoutreservation.MainActivity;
-import com.example.workoutreservation.Workout;
+import com.example.workoutreservation.components.AppComponents;
+import com.example.workoutreservation.components.ContextModule;
+import com.example.workoutreservation.components.DaggerAppComponents;
+import com.example.workoutreservation.model.Workout;
 import com.example.workoutreservation.databinding.FragmentAddWorkoutBinding;
 
 import java.util.Calendar;
-import java.util.Date;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -28,7 +29,9 @@ public class AddWorkout extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        MainActivity mainActivity = (MainActivity) requireActivity();
+        AppComponents appComponents = DaggerAppComponents.builder()
+                .contextModule(new ContextModule(getContext()))
+                .build();
 
         FragmentAddWorkoutBinding binding = FragmentAddWorkoutBinding.inflate(inflater, container, false);
         binding.addWorkoutTime.setIs24HourView(true);
@@ -47,7 +50,7 @@ public class AddWorkout extends Fragment {
             workout.setDateTime(calendar.getTimeInMillis());
             workout.setDescription(binding.workoutDescriptionText.getText().toString());
             workout.setMaxGroupSize(Integer.parseInt(binding.maxGroupSizeText.getText().toString()));
-            mainActivity.getService().addWorkout(workout.getDateTime(),workout.getMaxGroupSize(),workout.getDescription()).enqueue(new Callback<ResponseBody>() {
+            appComponents.getApiService().addWorkout(workout.getDateTime(),workout.getMaxGroupSize(),workout.getDescription()).enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     Log.d("AddWorkout",response.message() );

@@ -1,10 +1,6 @@
 package com.example.workoutreservation.fragments;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.Intent;
 import android.os.Bundle;
-import android.provider.CalendarContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,26 +14,16 @@ import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 import com.example.workoutreservation.MainActivity;
-import com.example.workoutreservation.R;
-import com.example.workoutreservation.User;
-import com.example.workoutreservation.Workout;
+import com.example.workoutreservation.SharedData;
+import com.example.workoutreservation.components.AppComponents;
+import com.example.workoutreservation.components.ContextModule;
+import com.example.workoutreservation.components.DaggerAppComponents;
+import com.example.workoutreservation.model.Workout;
 import com.example.workoutreservation.databinding.FragmentCancelReservationBinding;
-import com.example.workoutreservation.databinding.FragmentConfirmReservationBinding;
-import com.example.workoutreservation.notifications.MessageData;
-import com.example.workoutreservation.notifications.MyMessagingService;
-import com.example.workoutreservation.notifications.NotificationMessage;
-import com.example.workoutreservation.notifications.NotificationModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.util.HashMap;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -53,9 +39,12 @@ public class CancelReservation extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final FragmentCancelReservationBinding binding = FragmentCancelReservationBinding.inflate(inflater, container, false);
         CancelReservationArgs args = CancelReservationArgs.fromBundle(requireArguments());
-        MainActivity mainActivity = (MainActivity) requireActivity();
+        AppComponents appComponents = DaggerAppComponents.builder()
+                .contextModule(new ContextModule(getContext()))
+                .build();
+
         Workout workout = new Workout();
-        int userId = mainActivity.getUser().getUserId();
+        int userId = appComponents.getSharedData().getUser().getUserId();
         workout.setWorkoutId(args.getMyWorkoutId());
         workout.setDateTime(args.getMyWorkoutDate());
         workout.setDescription(args.getMyWorkoutDescription());
@@ -67,7 +56,7 @@ public class CancelReservation extends Fragment {
             @Override
             public void onClick(View v) {
 
-                mainActivity.getService().cancelReservation(workout.getWorkoutId(), userId).enqueue(new Callback<ResponseBody>() {
+                appComponents.getApiService().cancelReservation(workout.getWorkoutId(), userId).enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         Toast.makeText(requireContext(), "Success", Toast.LENGTH_SHORT).show();

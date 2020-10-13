@@ -1,4 +1,8 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+ext {
+    var = 'Kristis1'
+    var1 = 'Kristis1'
+    var2 = 'DistributionKey'
+}// Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
     

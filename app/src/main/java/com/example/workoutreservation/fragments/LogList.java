@@ -9,9 +9,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.workoutreservation.LogDataEntry;
+import com.example.workoutreservation.components.AppComponents;
+import com.example.workoutreservation.components.ContextModule;
+import com.example.workoutreservation.components.DaggerAppComponents;
+import com.example.workoutreservation.model.LogDataEntry;
 import com.example.workoutreservation.MainActivity;
-import com.example.workoutreservation.User;
+import com.example.workoutreservation.model.User;
 import com.example.workoutreservation.databinding.FragmentLogListBinding;
 
 import java.util.ArrayList;
@@ -26,11 +29,14 @@ public class LogList extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         FragmentLogListBinding binding = FragmentLogListBinding.inflate(inflater, container, false);
+        AppComponents appComponents = DaggerAppComponents.builder()
+                .contextModule(new ContextModule(getContext()))
+                .build();
+
         binding.logListRecyclerView.setHasFixedSize(true);
         LogListArgs args = LogListArgs.fromBundle(requireArguments());
         int userId = args.getUserId();
-        MainActivity mainActivity = (MainActivity) getActivity();
-        mainActivity.getService().getUserData(userId).enqueue(new Callback<User>() {
+        appComponents.getApiService().getUserData(userId).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 User user = response.body();
@@ -44,7 +50,7 @@ public class LogList extends Fragment {
             }
         });
 
-        mainActivity.getService().getLog(userId).enqueue(new Callback<List<LogDataEntry>>() {
+        appComponents.getApiService().getLog(userId).enqueue(new Callback<List<LogDataEntry>>() {
             @Override
             public void onResponse(Call<List<LogDataEntry>> call, Response<List<LogDataEntry>> response) {
                 List<LogDataEntry> logData = new ArrayList<>();

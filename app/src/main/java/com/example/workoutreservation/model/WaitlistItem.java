@@ -1,4 +1,4 @@
-package com.example.workoutreservation;
+package com.example.workoutreservation.model;
 
 public class WaitlistItem extends Workout {
     private int waitlistId;

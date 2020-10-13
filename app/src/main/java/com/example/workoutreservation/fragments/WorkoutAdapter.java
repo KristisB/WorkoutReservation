@@ -5,7 +5,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.navigation.NavDirections;
@@ -14,28 +13,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.workoutreservation.MainActivity;
 import com.example.workoutreservation.R;
-import com.example.workoutreservation.User;
-import com.example.workoutreservation.Workout;
+import com.example.workoutreservation.model.User;
+import com.example.workoutreservation.model.Workout;
 import com.example.workoutreservation.databinding.FragmentWorkoutListItemBinding;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
-
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.WorkoutViewHolder> {
     private List<Workout> workoutList = new ArrayList<Workout>();
-    MainActivity mainActivity;
+    User user;
 
 
-    public WorkoutAdapter(List<Workout> readyList, MainActivity mainActivity) {
+    public WorkoutAdapter(List<Workout> readyList, User user) {
         this.workoutList = readyList;
-        this.mainActivity = mainActivity;
+        this.user = user;
         for (Workout workout : readyList) {
             Log.d("ADAPTER", "workout ID" + workout.getWorkoutId());
         }
@@ -63,7 +56,7 @@ public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.WorkoutV
                 dateVisibility = false;
             }
         }
-        holder.bind(workoutList.get(position), mainActivity, dateVisibility);
+        holder.bind(workoutList.get(position), user, dateVisibility);
 
 
     }
@@ -82,7 +75,7 @@ public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.WorkoutV
             this.binding = binding;
         }
 
-        public void bind(Workout workout, MainActivity mainActivity, boolean previousDayVisibility) {
+        public void bind(Workout workout, User user, boolean previousDayVisibility) {
 
             if (previousDayVisibility) {
                 binding.date.setVisibility(View.VISIBLE);
@@ -113,12 +106,13 @@ public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.WorkoutV
                 }
             }
 
-            User user = mainActivity.getUser();
+//            User user = mainActivity.getUser();
 
             if (user.getRights() == 1) {
                 binding.date.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
                         NavDirections action = WorkoutListDirections.actionWorkoutListToAddWorkout(workout.getDateTime());
                         Navigation.findNavController(binding.getRoot()).navigate(action);
                     }
@@ -129,11 +123,13 @@ public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.WorkoutV
                     @Override
                     public void onClick(View v) {
                         Log.d("OnItemClick", "Workout ID " + workout.getWorkoutId());
+                        Log.d("OnItemClick", "Workout Extra 1= " + workout.getExtraInfo1() +" Workout Extra 2= "+workout.getExtraInfo2());
 
-                        Log.d("Adapter", "user Id " + mainActivity.getUser().getUserId());
+                        Log.d("Adapter", "user Id " + user.getUserId());
+
                         NavDirections actionToBookWorkout = WorkoutListDirections.actionWorkoutListToReservationConfirm2(
                                 workout.getWorkoutId(),
-                                mainActivity.getUser().getUserId(),
+                                user.getUserId(),
                                 workout.getDateTime(),
                                 workout.getDescription(),
                                 workout.getFreePlaces());

@@ -1,4 +1,4 @@
-package com.example.workoutreservation;
+package com.example.workoutreservation.model;
 
 import android.os.Build;
 
@@ -6,7 +6,7 @@ import androidx.annotation.RequiresApi;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
+import android.util.Base64;
 
 public class User {
     private int userId;
@@ -17,6 +17,15 @@ public class User {
     private String phone;
     private int rights;
     private int credits;
+    private String token;
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 
     public int getUserId() {
         return userId;
@@ -89,7 +98,7 @@ public class User {
             MessageDigest md = MessageDigest.getInstance("SHA-512");
             md.update(password.getBytes());
             byte[] bytes=md.digest();
-            hashedPass= Base64.getEncoder().encodeToString(bytes);
+            hashedPass= Base64.encodeToString(bytes,Base64.DEFAULT);
 
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();

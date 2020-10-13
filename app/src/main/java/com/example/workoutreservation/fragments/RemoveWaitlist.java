@@ -14,9 +14,11 @@ import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 import com.example.workoutreservation.MainActivity;
-import com.example.workoutreservation.WaitlistItem;
-import com.example.workoutreservation.Workout;
-import com.example.workoutreservation.databinding.FragmentCancelReservationBinding;
+import com.example.workoutreservation.SharedData;
+import com.example.workoutreservation.components.AppComponents;
+import com.example.workoutreservation.components.ContextModule;
+import com.example.workoutreservation.components.DaggerAppComponents;
+import com.example.workoutreservation.model.WaitlistItem;
 import com.example.workoutreservation.databinding.FragmentRemoveWaitlistBinding;
 
 import okhttp3.ResponseBody;
@@ -30,9 +32,12 @@ public class RemoveWaitlist extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final FragmentRemoveWaitlistBinding binding = FragmentRemoveWaitlistBinding.inflate(inflater, container, false);
         RemoveWaitlistArgs args = RemoveWaitlistArgs.fromBundle(requireArguments());
-        MainActivity mainActivity = (MainActivity) requireActivity();
+        AppComponents appComponents = DaggerAppComponents.builder()
+                .contextModule(new ContextModule(getContext()))
+                .build();
+
         WaitlistItem waitlistItem = new WaitlistItem();
-        int userId = mainActivity.getUser().getUserId();
+        int userId = appComponents.getSharedData().getUser().getUserId();
         waitlistItem.setWaitlistId(args.getWaitlistId());
         waitlistItem.setDateTime(args.getWorkoutDateTime());
         waitlistItem.setDescription(args.getWorkoutDescription());
@@ -60,7 +65,7 @@ public class RemoveWaitlist extends Fragment {
             @Override
             public void onClick(View v) {
 
-                mainActivity.getService().quitWaitlist(waitlistItem.getWaitlistId()).enqueue(new Callback<ResponseBody>() {
+                appComponents.getApiService().quitWaitlist(waitlistItem.getWaitlistId()).enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         Toast.makeText(requireContext(), "Success", Toast.LENGTH_SHORT).show();

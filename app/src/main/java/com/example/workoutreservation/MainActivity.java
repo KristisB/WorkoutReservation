@@ -9,9 +9,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -20,18 +18,9 @@ import com.example.workoutreservation.databinding.ActivityMainBinding;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.FirebaseApp;
 
-import retrofit2.Retrofit;
-import retrofit2.converter.moshi.MoshiConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
-    public static final String USER_ID = "userId";
-    public static final String EMAIL = "email";
-    public static final String PASSWORD = "password";
-    public static final String FIRST_NAME = "firstName";
-    public static final String FAMILY_NAME = "familyName";
-    public static final String PHONE = "phone";
-    public static final String RIGHTS = "rights";
-    public static final String CREDITS = "credits";
+
     private int newIntentDirection;
     private NavigationView navigationView;
 
@@ -43,8 +32,6 @@ public class MainActivity extends AppCompatActivity {
         this.newIntentDirection = newIntentDirection;
     }
 
-    private ApiService service;
-    private SharedPreferences sharedPref;
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
@@ -53,24 +40,26 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
-        super.onStart();
+//        android.os.Debug.waitForDebugger();
+
+        //if new intent
         Intent intent = getIntent();
         if (intent != null) {
-            if (intent.getExtras() != null) {
-                if (intent.getStringExtra("fragment").equals("MyWaitlists")) {
+            Bundle bundle = intent.getExtras();
+            if (bundle != null) {
+                if ((intent.getStringExtra("fragment")!=null)&&(intent.getStringExtra("fragment").equals("MyWaitlists")))
                     newIntentDirection = 1;
-                }
-                if (intent.getStringExtra("fragment").equals("MyWorkouts")) {
+                Log.d("OnStart", "newIntentDirection = 1");
+
+
+                if ((intent.getStringExtra("fragment")!=null)&&(intent.getStringExtra("fragment").equals("MyWorkouts"))) {
                     newIntentDirection = 2;
+                    Log.d("OnStart", "newIntentDirection = 2");
                 }
             }
         }
 
-//        Menu menu = navigationView.getMenu();
-//        if (user1.getRights() != 1) {
-//            menu.findItem(R.id.usersList).setVisible(false);
-//        }
-
+        super.onStart();
     }
 
 
@@ -79,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        sharedPref = getPreferences(Context.MODE_PRIVATE);
+
 
 
         FirebaseApp.initializeApp(this);
@@ -97,10 +86,6 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
         Menu menu = navigationView.getMenu();
-        User logedUser = getUser();
-        if (logedUser.getRights() != 1) {
-            menu.findItem(R.id.usersList).setVisible(false);
-        }
 
         //makes drawer to appear by clicking action bar icon
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.Open, R.string.Close);
@@ -110,12 +95,6 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
         toggle.syncState();
 
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2")            // realybeje nurodomas serverio adresas
-                .addConverterFactory(MoshiConverterFactory.create())
-                .build();
-        service = retrofit.create(ApiService.class);
     }
 
     @Override
@@ -134,50 +113,17 @@ public class MainActivity extends AppCompatActivity {
             if (intent.getExtras() != null) {
                 if (intent.getStringExtra("fragment").equals("MyWaitlists")) {
                     newIntentDirection = 1;
+                    Log.d("OnNewIntent", "newIntentDirection = 1");
                     super.recreate();
                 }
                 if (intent.getStringExtra("fragment").equals("MyWorkouts")) {
                     newIntentDirection = 2;
+                    Log.d("OnNewIntent", "newIntentDirection = 1");
+
                     super.recreate();
                 }
             }
 
         }
-    }
-
-
-    public ApiService getService() {
-        return service;
-    }
-//    public MsgApiService getMsgService(){return msgService;}
-
-    public void saveUser(User user) {
-
-        SharedPreferences.Editor editor = sharedPref.edit();
-
-        editor.putInt(USER_ID, user.getUserId());
-        editor.putString(EMAIL, user.getEmail());
-        editor.putString(PASSWORD, user.getPassword());
-        editor.putString(FIRST_NAME, user.getFirstName());
-        editor.putString(FAMILY_NAME, user.getFamilyName());
-        editor.putString(PHONE, user.getPhone());
-        editor.putInt(RIGHTS, user.getRights());
-        editor.putInt(CREDITS, user.getCredits());
-
-        editor.commit();
-    }
-
-    public User getUser() {
-        User user = new User();
-
-        user.setUserId(sharedPref.getInt(USER_ID, -1));
-        user.setEmail(sharedPref.getString(EMAIL, ""));
-        user.setPassword(sharedPref.getString(PASSWORD, ""));
-        user.setFirstName(sharedPref.getString(FIRST_NAME, ""));
-        user.setFamilyName(sharedPref.getString(FAMILY_NAME, ""));
-        user.setPhone(sharedPref.getString(PHONE, ""));
-        user.setRights(sharedPref.getInt(RIGHTS, 0));
-        user.setCredits(sharedPref.getInt(CREDITS, 0));
-        return user;
     }
 }

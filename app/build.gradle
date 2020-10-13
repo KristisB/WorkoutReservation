@@ -2,20 +2,30 @@ apply plugin: 'com.android.application'
 apply plugin: "androidx.navigation.safeargs"
 apply plugin: 'com.google.gms.google-services'
 
-
-
 android {
+    signingConfigs {
+        debug {
+            storeFile file('D:\\Repositories\\MyApps\\mykeys.jks')
+        }
+        release {
+            storeFile file('D:\\Repositories\\MyApps\\mykeys.jks')
+            storePassword var
+            keyAlias = var2
+            keyPassword var1
+        }
+    }
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
 
     defaultConfig {
         applicationId "com.example.workoutreservation"
-        minSdkVersion 26
+        minSdkVersion 22
         targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.01"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.release
     }
 
     buildTypes {
@@ -74,6 +84,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:19.3.1'
     implementation 'com.google.code.gson:gson:2.8.6'
 
+    //dagger2
+    implementation 'com.google.dagger:dagger:2.29.1'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.29.1'
 
 
 }

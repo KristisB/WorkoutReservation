@@ -7,12 +7,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.workoutreservation.LogDataEntry;
-import com.example.workoutreservation.User;
-import com.example.workoutreservation.WaitlistItem;
+import com.example.workoutreservation.model.LogDataEntry;
 import com.example.workoutreservation.databinding.FragmentLogItemBinding;
-import com.example.workoutreservation.databinding.FragmentUserListItemBinding;
-import com.example.workoutreservation.databinding.FragmentWorkoutListItemBinding;
 
 import java.util.ArrayList;
 import java.util.List;

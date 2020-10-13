@@ -2,6 +2,7 @@ package com.example.workoutreservation.fragments;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +16,11 @@ import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 import com.example.workoutreservation.MainActivity;
-import com.example.workoutreservation.User;
-import com.example.workoutreservation.databinding.FragmentUserDataBinding;
+import com.example.workoutreservation.SharedData;
+import com.example.workoutreservation.components.AppComponents;
+import com.example.workoutreservation.components.ContextModule;
+import com.example.workoutreservation.components.DaggerAppComponents;
+import com.example.workoutreservation.model.User;
 import com.example.workoutreservation.databinding.FragmentUserDataUpdateBinding;
 
 import java.io.IOException;
@@ -35,8 +39,11 @@ public class UserDataUpdate extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
         FragmentUserDataUpdateBinding binding = FragmentUserDataUpdateBinding.inflate(inflater, container, false);
-        MainActivity mainActivity = (MainActivity) getActivity();
-        User user = mainActivity.getUser();
+        AppComponents appComponents = DaggerAppComponents.builder()
+                .contextModule(new ContextModule(getContext()))
+                .build();
+
+        User user = appComponents.getSharedData().getUser();
         if (user.getUserId() > -1) {
             binding.userNameEditText.setText(user.getFirstName());
             binding.userFamilyNameEditText.setText(user.getFamilyName());
@@ -56,7 +63,8 @@ public class UserDataUpdate extends Fragment {
                         String hashedPass=user.hashPass(binding.userPasswordEditText.getText().toString());
                         user.setPassword(hashedPass);
                     }
-                    mainActivity.getService().saveUserData(
+                    Log.d("save user ", "user data: id "+user.getUserId()+", "+user.getFirstName());
+                    appComponents.getApiService().saveUserData(
                             user.getUserId(),
                             user.getFirstName(),
                             user.getFamilyName(),
@@ -72,7 +80,7 @@ public class UserDataUpdate extends Fragment {
                                     e.printStackTrace();
                                 }
                                 if (response.code() == 201) {
-                                    mainActivity.saveUser(user);
+                                    appComponents.getSharedData().saveUser(user);
                                     NavDirections action= UserDataUpdateDirections.actionUserDataUpdateToUserData();
                                     Navigation.findNavController(binding.getRoot()).navigate(action);
                                 }
@@ -103,7 +111,7 @@ public class UserDataUpdate extends Fragment {
                         String hashedPass=user.hashPass(binding.userPasswordEditText.getText().toString());
                         user.setPassword(hashedPass);
                     }
-                    mainActivity.getService().saveUserData(
+                    appComponents.getApiService().saveUserData(
                             user.getUserId(),
                             user.getFirstName(),
                             user.getFamilyName(),

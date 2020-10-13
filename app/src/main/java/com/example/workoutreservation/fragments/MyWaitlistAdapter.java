@@ -12,9 +12,7 @@ import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.workoutreservation.R;
-import com.example.workoutreservation.WaitlistItem;
-import com.example.workoutreservation.Workout;
+import com.example.workoutreservation.model.WaitlistItem;
 import com.example.workoutreservation.databinding.FragmentWorkoutListItemBinding;
 
 import java.util.ArrayList;

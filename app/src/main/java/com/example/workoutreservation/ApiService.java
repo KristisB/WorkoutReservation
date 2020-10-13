@@ -1,6 +1,9 @@
 package com.example.workoutreservation;
 
-import org.json.JSONArray;
+import com.example.workoutreservation.model.LogDataEntry;
+import com.example.workoutreservation.model.User;
+import com.example.workoutreservation.model.WaitlistItem;
+import com.example.workoutreservation.model.Workout;
 
 import java.util.List;
 
@@ -23,9 +26,10 @@ public interface ApiService {
     @POST("save_token")
     Call<ResponseBody> saveToken(@Field("userId") int userId, @Field("token") String token);
 
+    //todo change parameter to User
     @FormUrlEncoded
     @POST("save_user_data")
-    Call<ResponseBody> saveUserData(@Field("userId") int userId, @Field("firstName") String firstName,
+    Call<ResponseBody> saveUserData (@Field("userId") int userId, @Field("firstName") String firstName,
                                     @Field("familyName") String familyName, @Field("email") String email,
                                     @Field("password") String password,@Field("phone") String phone);
 
@@ -41,6 +45,7 @@ public interface ApiService {
     @POST("get_workouts_with_extra")
     Call<List<Workout>> getWorkouts(@Field("date") String date, @Field("userId") int userId);
 
+    //todo fix method to pass Workout instance
     @FormUrlEncoded
     @POST("add_workout")
     Call<ResponseBody> addWorkout(@Field("date") long date, @Field("maxGroupSize") int maxGroupSize, @Field("description") String description);

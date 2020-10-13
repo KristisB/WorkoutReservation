@@ -5,20 +5,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.workoutreservation.MainActivity;
-import com.example.workoutreservation.User;
-import com.example.workoutreservation.Workout;
+import com.example.workoutreservation.SharedData;
+import com.example.workoutreservation.components.AppComponents;
+import com.example.workoutreservation.components.ContextModule;
+import com.example.workoutreservation.components.DaggerAppComponents;
+import com.example.workoutreservation.model.User;
+import com.example.workoutreservation.model.Workout;
 import com.example.workoutreservation.databinding.FragmentMyWorkoutsBinding;
-import com.example.workoutreservation.databinding.FragmentWorkoutListBinding;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import retrofit2.Call;
@@ -30,9 +31,11 @@ public class MyWorkouts extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         FragmentMyWorkoutsBinding binding = FragmentMyWorkoutsBinding.inflate(inflater, container, false);
-        MainActivity mainActivity = (MainActivity) getActivity();
-        User user = mainActivity.getUser();
-        mainActivity.getService().getMyWorkouts(user.getUserId()).enqueue(new Callback<List<Workout>>() {
+        AppComponents appComponents = DaggerAppComponents.builder()
+                .contextModule(new ContextModule(getContext()))
+                .build();
+        User user = appComponents.getSharedData().getUser();
+        appComponents.getApiService().getMyWorkouts(user.getUserId()).enqueue(new Callback<List<Workout>>() {
             @Override
             public void onResponse(Call<List<Workout>> call, Response<List<Workout>> response) {
                 List<Workout> rawList = new ArrayList<>();
